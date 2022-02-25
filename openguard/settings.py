@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ibc2wkz@&a)k8-kbs74azoa5zxwd2!e4@$13f7&gv3g3rhz5rn
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
-DEBUG = int(os.environ.get("DEBUG", default=0))
+DEBUG = True # int(os.environ.get("DEBUG", default=0))
 
 
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
@@ -39,6 +39,7 @@ ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1','[::1]']
 # Application definition
 
 INSTALLED_APPS = [
+    'app.apps.AppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,7 +63,7 @@ ROOT_URLCONF = 'openguard.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
