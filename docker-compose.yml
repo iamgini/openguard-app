@@ -12,8 +12,8 @@ services:
   web:
     #build: .
     image: "localhost/openguard"
-    restart: always
-    command: python manage.py runserver 0.0.0.0:8000
+    #restart: always
+    command: python openguard/manage.py runserver 0.0.0.0:8000
     container_name: openguard
     volumes:
       - openguard_data:/code
