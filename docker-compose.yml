@@ -10,10 +10,13 @@ services:
   #    - POSTGRES_USER=postgres
   #    - POSTGRES_PASSWORD=postgres
   web:
-    build: .
+    #build: .
+    image: "localhost/openguard"
+    restart: always
     command: python manage.py runserver 0.0.0.0:8000
+    container_name: openguard
     volumes:
-      - .:/code
+      - openguard_data:/code
     ports:
       - "8000:8000"
     environment:
