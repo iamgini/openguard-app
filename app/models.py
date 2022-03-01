@@ -9,9 +9,10 @@ class ManagedNodes(models.Model):
     return f"{ self.instance_name} connects using {self.instance_credential}"
 
 class Credentials(models.Model):
-  instance_name = models.CharField(max_length=50)
-  instance_name_connection = models.CharField(max_length=50)
+  cred_name = models.CharField(max_length=20)
+  cred_type = models.CharField(max_length=50)
   instance_credential = models.CharField(max_length=50)
 
   def __str__(self):
     return f"{ self.instance_name} connects using {self.instance_credential}"
+    
