@@ -94,11 +94,13 @@ WSGI_APPLICATION = 'openguard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbopenguard',
-        'USER': 'dbadmin',
-        'PASSWORD': 'dbpassword',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': 'openguarddb',
+        'USER': 'postgresadmin',
+        'PASSWORD': 'admin123',
+        'HOST': '192.168.64.10',
+        'PORT': '32003',
+        #'HOST': 'localhost',
+        #'PORT': '5432',
     }
 }
 
