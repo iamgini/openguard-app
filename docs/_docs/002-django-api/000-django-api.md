@@ -13,5 +13,10 @@ https://github.com/codingforentrepreneurs/Django-Rest-Framework-Tutorial
 
 Serialization is the process of converting a Model to JSON. Using a serializer, we can specify what fields should be present in the JSON representation of the model.
 
+## Sample curl request
+
+```shell
+root@Ubuntu-20-CP:~# curl -X POST http://192.168.56.1:8000/app/api/nodes/managednodes/ -H "Content-Type: application/json" -d '{"instance_name": "node66","instance_name_connection": "node66.lab.local","instance_credential": "test55"}'
+```
 
 ## Appendix

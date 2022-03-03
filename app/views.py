@@ -8,7 +8,7 @@ from rest_framework.parsers import JSONParser
 
 ## REST API
 from rest_framework import viewsets, status
-from .serializers import ManagedNodesSerializer, IncidentsSerializer
+from .serializers import ManagedNodesSerializer, IncidentsSerializer, IncidentsSerializerNew
 from .models import ManagedNodes, Incidents
 
 ## Refer to https://www.bezkoder.com/django-rest-api
@@ -57,4 +57,26 @@ def nodes_list(request):
     #elif request.method == 'DELETE':
     #    count = Tutorial.objects.all().delete()
     #    return JsonResponse({'message': '{} Tutorials were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
- 
+  
+@api_view(['GET', 'POST', 'DELETE'])
+def incident_report(request):
+    #if request.method == 'GET':
+    #    managenodes = ManagedNodes.objects.all()
+    #    
+    #    node = request.query_params.get('instance_name', None)
+    #    if node is not None:
+    #        managenodes = managenodes.filter(title__icontains=node)
+    #    
+    #    managenodes_serializer = ManagedNodesSerializer(managenodes, #many=True)
+    #    return JsonResponse(managenodes_serializer.data, safe=False)
+    #    # 'safe=False' for objects serialization
+    #elif request.method == 'POST':
+    if request.method == 'POST':  
+        incident_data = JSONParser().parse(request)
+        incident_serializer = IncidentsSerializerNew(data=incident_data)
+        if incident_serializer.is_valid():
+            incident_serializer.save()
+            return JsonResponse(incident_serializer.data,     status=status.HTTP_201_CREATED) 
+        return JsonResponse(incident_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        #return incident_data
+        

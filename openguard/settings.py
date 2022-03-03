@@ -33,7 +33,7 @@ DEBUG = True # int(os.environ.get("DEBUG", default=0))
 # For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
 #ALLOWED_HOSTS = []
 #ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
-ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1','[::1]']
+ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1','[::1]','192.168.56.1']
 
 
 # Application definition
