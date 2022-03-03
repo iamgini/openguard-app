@@ -7,6 +7,11 @@ https://github.com/codingforentrepreneurs/Django-Rest-Framework-Tutorial
 [An introduction to the Django ORM](https://opensource.com/article/17/11/django-orm)
 [Build a REST API in 30 minutes with Django REST Framework](https://medium.com/swlh/build-your-first-rest-api-with-django-rest-framework-e394e39a482c)
 
+- [Rest API Guide](https://www.bezkoder.com/django-rest-api/#1_Technology)
+
 ## Serialization
 
 Serialization is the process of converting a Model to JSON. Using a serializer, we can specify what fields should be present in the JSON representation of the model.
+
+
+## Appendix

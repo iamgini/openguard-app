@@ -41,6 +41,7 @@ ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1','[::1]']
 ## Gineesh: 1. added 'app.apps.AppConfig',
 ## Gineesh: 2. added 'api.apps.ApiConfig',
 ## Gineesh: 3. added 'rest_framework',
+## Gineesh: 4. added 'corsheaders',
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [

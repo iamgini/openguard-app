@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from app.models import ManagedNodes,Credentials
+from app.models import ManagedNodes,Credentials, Incidents
 
 # Customize admin portal
 admin.site.site_header = 'OpenGuard Admin Dashboard'
@@ -30,3 +30,5 @@ class CredentialsAdmin(admin.ModelAdmin):
 
 admin.site.register(ManagedNodes,ManagedNodesAdmin)
 admin.site.register(Credentials,CredentialsAdmin)
+
+admin.site.register(Incidents)
