@@ -1,5 +1,6 @@
 # Falco configs
 
+https://falco.org/docs/alerts/
 
 ## Installing Falco
 https://falco.org/docs/getting-started/installation/
@@ -66,5 +67,12 @@ http_output:
 ## configure json_output
 # Whether to output events in json or text
 json_output: true
+
+
+## Disable json value in output
+# When using json output, whether or not to include the "output" property
+# itself (e.g. "File below a known binary directory opened for writing
+# (user=root ....") in the json output.
+#json_include_output_property: true
 ```
  

@@ -21,8 +21,7 @@ class IncidentsSerializer(serializers.HyperlinkedModelSerializer):
                   'incident_time', 
                   'incident_priority',
                   'incident_rule',
-                  'incident_output',
-                  'incident_output_fields')
+                  'incident_output')
 
 ## incident serializer for falco
 #class IncidentsSerializerNew(serializers.HyperlinkedModelSerializer):
@@ -31,7 +30,7 @@ class IncidentsSerializerNew(serializers.ModelSerializer):
     priority = serializers.CharField(source='incident_priority')
     rule = serializers.CharField(source='incident_rule')
     output = serializers.CharField(source='incident_output')
-    output_fields = serializers.CharField(source='incident_output_fields')
+    #output_fields = serializers.CharField(source='incident_output_fields_new')
 
     class Meta:
         model = Incidents
@@ -40,5 +39,4 @@ class IncidentsSerializerNew(serializers.ModelSerializer):
                   'time', 
                   'priority',
                   'rule',
-                  'output',
-                  'output_fields')
+                  'output',)

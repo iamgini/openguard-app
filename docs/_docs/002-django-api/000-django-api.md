@@ -17,6 +17,15 @@ Serialization is the process of converting a Model to JSON. Using a serializer, 
 
 ```shell
 root@Ubuntu-20-CP:~# curl -X POST http://192.168.56.1:8000/app/api/nodes/managednodes/ -H "Content-Type: application/json" -d '{"instance_name": "node66","instance_name_connection": "node66.lab.local","instance_credential": "test55"}'
+
+
+$ curl -X POST http://192.168.56.1:8000/app/api/incident_report/ -H "Content-Type: application/json" -d '{"time":"2022-03-03T21:22:00Z","priority":"low","rule":"newrule","output":"test outputnew"}'
 ```
 
+## Change branding on REST API page
+
+Read: https://www.django-rest-framework.org/topics/browsable-api/#customizing
+
+- create `templates/rest_framework` directory
+- 
 ## Appendix
