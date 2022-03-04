@@ -14,6 +14,9 @@ from .models import ManagedNodes, Incidents
 ## Refer to https://www.bezkoder.com/django-rest-api
 from rest_framework.decorators import api_view
 
+## for json to text converter and wrinting to log file
+import json
+
 # Create your views here.
 def index(request):
   return HttpResponse("This is app")
@@ -59,7 +62,7 @@ def nodes_list(request):
     #    return JsonResponse({'message': '{} Tutorials were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
   
 @api_view(['GET', 'POST', 'DELETE'])
-def incident_report(request):
+def incident_report(request,hostname):
     #if request.method == 'GET':
     #    managenodes = ManagedNodes.objects.all()
     #    
@@ -71,12 +74,21 @@ def incident_report(request):
     #    return JsonResponse(managenodes_serializer.data, safe=False)
     #    # 'safe=False' for objects serialization
     #elif request.method == 'POST':
-    if request.method == 'POST':  
+    if request.method == 'POST':
+        incident_hostname = {"hostname":"hostname"}
         incident_data = JSONParser().parse(request)
+        
+        new_log = open( 'application_logs/logs', "a")
+        new_log.write('\n' + hostname + json.dumps( incident_data ))
+        new_log.close()
+
+
+        #incident_hostname = JSONParser().parse(request.POST)
         incident_serializer = IncidentsSerializerNew(data=incident_data)
+
         if incident_serializer.is_valid():
             incident_serializer.save()
-            return JsonResponse(incident_serializer.data,     status=status.HTTP_201_CREATED) 
+            return JsonResponse(incident_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(incident_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         #return incident_data
         

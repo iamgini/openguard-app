@@ -29,3 +29,5 @@ Read: https://www.django-rest-framework.org/topics/browsable-api/#customizing
 - create `templates/rest_framework` directory
 - 
 ## Appendix
+
+- [How to set/get a list type query param in Django Rest Framework](https://lucyeun95.medium.com/how-to-set-get-a-list-type-query-param-in-django-rest-framework-831f30476111)

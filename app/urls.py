@@ -23,8 +23,8 @@ urlpatterns = [
   path('api/nodes/', include(router_nodes.urls)),
   path('api/nodesv2/', views.nodes_list, name='nodes_list_api'),
   path('api/incidents/', include(router_incidents.urls)),
-  path('api/incident_report/', views.incident_report,name='incident_report_api'),
-  
+  path('api/incident_report/<str:hostname>/', views.incident_report,name='incident_report_api'),
+  #<str:topic>/
 
   #url(r'^api/tutorials$', views.tutorial_list),
 ]

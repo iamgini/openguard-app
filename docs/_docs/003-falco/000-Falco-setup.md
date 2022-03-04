@@ -31,8 +31,12 @@ apt-get remove falco
 
 ## Falco rules
 
+https://falco.org/docs/rules/
 https://securityhub.dev/falco-rules/file-integrity-monitoring
 
+
+- /etc/falco/falco_rules.yaml - default rule
+- /etc/falco/falco_rules.local.yaml - local rule
 
 ```yaml
 ## /etc/falco/falco_rules.local.yaml
@@ -52,7 +56,26 @@ https://securityhub.dev/falco-rules/file-integrity-monitoring
 
 https://falco.org/blog/falco-security-audit/
 
+## Disable default rules
 
+1. Add a tag 
+
+`sed -i 's/tags: \[/tags: \[openguarddemo,/g' /etc/falco/falco_rules.yaml`
+
+2. run Falco with skipping tags
+
+`falco -T openguarddemo`
+
+### Configure systemd to include tag
+
+```shell
+## find the file
+systemctl cat falco
+  --> /lib/systemd/system/falco.service
+
+## update 
+ExecStart=/usr/bin/falco -T openguarddemo --pidfile=/var/run/falco.pid
+```
 ## Configure Falco Alerts
 
 ```yaml

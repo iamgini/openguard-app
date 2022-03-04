@@ -24,8 +24,9 @@ class Incidents(models.Model):
   incident_time_reported = models.DateTimeField(auto_now=True)
   incident_time = models.DateTimeField()
   incident_priority = models.CharField(max_length=10, default='')
-  incident_rule = models.CharField(max_length=200, default='')
-  incident_output = models.CharField(max_length=1000, default='')
+  incident_rule = models.CharField(max_length=300, default='')
+  incident_output = models.CharField(max_length=2000, default='')
+  incident_hostname = models.CharField(max_length=1000, default='')
   #incident_output_fields = models.CharField(max_length=1000, default='')
   #incident_output_fields_new = models.JSONField(default=dict)
 

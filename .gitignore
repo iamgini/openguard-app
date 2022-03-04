@@ -9,3 +9,6 @@ media
 
 # Backup files # 
 *.bak 
+
+## log files from app
+application_logs
