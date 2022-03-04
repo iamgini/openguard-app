@@ -39,6 +39,7 @@ class IncidentsSerializerNew(serializers.ModelSerializer):
     #    return hostname
 
     incident_hostname = serializers.SerializerMethodField()
+    
     @classmethod
     def get_incident_hostname(self, object):
         """getter method to add field incident_hostname"""
