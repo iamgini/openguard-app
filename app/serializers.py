@@ -31,19 +31,12 @@ class IncidentsSerializerNew(serializers.ModelSerializer):
     priority = serializers.CharField(source='incident_priority')
     rule = serializers.CharField(source='incident_rule')
     output = serializers.CharField(source='incident_output')
-    #hostname = serializers.CharField(source='incident_hostname')
-    #hostname = serializers.SerializerMethodField('incident_hostname')
-    #output_fields = serializers.CharField(source='incident_output_fields_new')
-    #def get_hostname(self):
-    #    hostname = self.kwargs['hostname']
-    #    return hostname
 
+    ## fetch arguments from url
+    ## https://stackoverflow.com/questions/66745219/django-rest-framework-use-url-parameter-in-serializer
     incident_hostname = serializers.SerializerMethodField()
-    
-    @classmethod
-    def get_incident_hostname(self, object):
-        """getter method to add field incident_hostname"""
-        return 'hostname'
+    def get_incident_hostname(self, obj):
+        return self.context.get('incident_hostname')
 
     class Meta:
         model = Incidents
@@ -54,11 +47,3 @@ class IncidentsSerializerNew(serializers.ModelSerializer):
                   'priority',
                   'rule',
                   'output',)
-
-    #def to_representation(self, instance):
-    #  representation = super().to_representation(instance)
-    #  if instance.name!='': #condition
-    #     representation['email']=instance.name+"@xyz.com"#adding key and value
-    #     representation['currency']=instance.task.profile.currency #adding key and value some other relation field
-    #     return representation
-    #  return representation

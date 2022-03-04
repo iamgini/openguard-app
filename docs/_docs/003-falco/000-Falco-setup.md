@@ -99,3 +99,6 @@ json_output: true
 #json_include_output_property: true
 ```
  
+
+
+ https://sysdig.com/blog/fascinating-world-linux-system-calls/

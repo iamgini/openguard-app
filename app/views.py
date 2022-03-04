@@ -62,7 +62,7 @@ def nodes_list(request):
     #    return JsonResponse({'message': '{} Tutorials were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
   
 @api_view(['GET', 'POST', 'DELETE'])
-def incident_report(request,hostname):
+def incident_report(request):
     #if request.method == 'GET':
     #    managenodes = ManagedNodes.objects.all()
     #    
@@ -75,19 +75,20 @@ def incident_report(request,hostname):
     #    # 'safe=False' for objects serialization
     #elif request.method == 'POST':
     if request.method == 'POST':
-        incident_hostname = {"hostname":"hostname"}
         incident_data = JSONParser().parse(request)
         
-        new_log = open( 'application_logs/logs', "a")
-        new_log.write('\n' + hostname + json.dumps( incident_data ))
-        new_log.close()
+        #incident_serializer = IncidentsSerializerNew(data=incident_data)
+        incident_serializer = IncidentsSerializerNew(data=incident_data, context={
+           "incident_hostname": request.query_params.get("source_hostname")
+        })
 
-
-        #incident_hostname = JSONParser().parse(request.POST)
-        incident_serializer = IncidentsSerializerNew(data=incident_data)
+        my_incident_hostname = request.query_params.get("source_hostname")
+        #new_log = open( 'application_logs/logs', "a")
+        #new_log.write('\n' + my_incident_hostname + json.dumps( incident_data ))
+        #new_log.close()
 
         if incident_serializer.is_valid():
-            incident_serializer.save()
+            incident_serializer.save(incident_hostname=my_incident_hostname)
             return JsonResponse(incident_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(incident_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         #return incident_data

@@ -31,3 +31,4 @@ Read: https://www.django-rest-framework.org/topics/browsable-api/#customizing
 ## Appendix
 
 - [How to set/get a list type query param in Django Rest Framework](https://lucyeun95.medium.com/how-to-set-get-a-list-type-query-param-in-django-rest-framework-831f30476111)
+- [How to Save Extra Data to a Django REST Framework Serializer](https://simpleisbetterthancomplex.com/tutorial/2019/04/07/how-to-save-extra-data-to-a-django-rest-framework-serializer.html)
