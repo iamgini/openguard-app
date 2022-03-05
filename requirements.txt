@@ -4,3 +4,8 @@ gunicorn>=20
 djangorestframework
 django-cors-headers
 django-jsonfield
+
+ansible_runner
+ansible-core>==2.12
+
+django-crispy-forms

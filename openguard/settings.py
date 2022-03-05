@@ -42,6 +42,7 @@ ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1','[::1]','192.168.56.1']
 ## Gineesh: 2. added 'api.apps.ApiConfig',
 ## Gineesh: 3. added 'rest_framework',
 ## Gineesh: 4. added 'corsheaders',
+## Gineesh: 5. added 'crispy_forms',
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    #'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -155,5 +157,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ## Gineesh
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/app/dashboard'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+## Gineesh - bootstrap template
+## skipped due to issues.
+#CRISPY_TEMPLATE_PACK = 'bootstrap'

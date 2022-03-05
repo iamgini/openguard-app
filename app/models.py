@@ -32,4 +32,7 @@ class Incidents(models.Model):
 
   def __str__(self):
     return f"{ self.incident_time} connects using {self.incident_output}"
-        
+
+  def details(self):
+    return repr( dict( incident_time_reported=self.incident_time_reported, incident_time=self.incident_time, incident_priority=self.incident_priority, incident_rule=self.incident_rule, incident_output=self.incident_output, incident_hostname=self.incident_hostname ) )
+    #return f"{ self.incident_time} connects using {self.incident_output}"      

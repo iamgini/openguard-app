@@ -1,7 +1,7 @@
 ## redirect for url redirection after user submit data
 from django.shortcuts import render,redirect
 from django.urls import reverse
-#from .import models
+from .import models
 from django.http import HttpResponse
 from django.http.response import Http404, HttpResponse, HttpResponseNotFound, JsonResponse
 from rest_framework.parsers import JSONParser 
@@ -24,6 +24,13 @@ def index(request):
 def home_view(request):
   #home template file
   return render(request,'app/home.html')  
+
+## dashboard with event logs
+def dashboard_view(request):
+  #home template file
+  all_incidents = models.Incidents.objects.all()
+  context = {'all_incidents':all_incidents}
+  return render(request,'app/dashboard.html',context=context) 
 
 ## Rest API View 
 class ManagedNodesViewSet(viewsets.ModelViewSet):

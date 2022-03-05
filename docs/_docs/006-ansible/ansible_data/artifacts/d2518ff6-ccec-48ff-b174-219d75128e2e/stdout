@@ -1,0 +1,12 @@
+[1;35m[WARNING]: Unable to parse /Users/gini/computing-project/openguard-app/docs/_do[0m
+[1;35mcs/006-ansible/ansible_data/project/ansible_data/inventory/hosts.json as an[0m
+[1;35minventory source[0m
+[1;35m[WARNING]: No inventory was parsed, only implicit localhost is available[0m
+[1;35m[WARNING]: provided hosts list is empty, only localhost is available. Note that[0m
+[1;35mthe implicit localhost does not match 'all'[0m
+
+PLAY [all] *********************************************************************
+[0;36mskipping: no hosts matched[0m
+
+PLAY RECAP *********************************************************************
+

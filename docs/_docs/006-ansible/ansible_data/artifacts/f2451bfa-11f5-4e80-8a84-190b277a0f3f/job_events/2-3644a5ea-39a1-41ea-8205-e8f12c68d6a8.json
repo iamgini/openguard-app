@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "3644a5ea-39a1-41ea-8205-e8f12c68d6a8", "counter": 2, "stdout": "\u001b[1;35mcs/006-ansible/ansible_data/project/ansible_data/inventory/hosts.json as an\u001b[0m", "start_line": 1, "end_line": 2, "runner_ident": "f2451bfa-11f5-4e80-8a84-190b277a0f3f", "created": "2022-03-05T03:02:55.700537"}

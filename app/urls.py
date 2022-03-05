@@ -3,6 +3,7 @@ from django.urls import path, include
 ## Rest API
 from rest_framework import routers
 from . import views
+from django.views.generic.base import TemplateView
 
 router_nodes = routers.DefaultRouter()
 router_nodes.register(r'managednodes', views.ManagedNodesViewSet)
@@ -14,6 +15,8 @@ app_name = 'app'
 urlpatterns = [
   #path('', views.index,name='index'),
   path('',views.home_view,name='home_view'),
+  path('dashboard/',views.dashboard_view,name='dashboard_view'),
+  #path('dashboard/', TemplateView.as_view(template_name='dashboard.html'), name='dashboard_view'),
   #path('home/',views.home_view,name='home_view')
   #path('test/',views.index,name='app')  # /app --> demo_site urls.py
   ## for login
