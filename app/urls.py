@@ -18,9 +18,6 @@ urlpatterns = [
   path('dashboard/',views.dashboard_view,name='dashboard_view'),
   #path('dashboard/', TemplateView.as_view(template_name='dashboard.html'), name='dashboard_view'),
   #path('home/',views.home_view,name='home_view')
-  #path('test/',views.index,name='app')  # /app --> demo_site urls.py
-  ## for login
-  #path('login/',views.home_view,name='home_view')
   
   ## API URLS
   path('api/nodes/', include(router_nodes.urls)),
