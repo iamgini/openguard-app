@@ -53,6 +53,20 @@ https://securityhub.dev/falco-rules/file-integrity-monitoring
   tags: [filesystem]
 ```
 
+### Rule Priorities
+
+https://falco.org/docs/rules/#rule-priorities
+
+Every Falco rule has a priority which indicates how serious a violation of the rule is. The priority is included in the message/JSON output/etc. Here are the available priorities:
+
+EMERGENCY
+ALERT
+CRITICAL
+ERROR
+WARNING
+NOTICE
+INFORMATIONAL
+DEBUG
 
 https://falco.org/blog/falco-security-audit/
 

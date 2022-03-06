@@ -15,7 +15,17 @@ app_name = 'app'
 urlpatterns = [
   #path('', views.index,name='index'),
   path('',views.home_view,name='home_view'),
+  ## app dashboard
   path('dashboard/',views.dashboard_view,name='dashboard_view'),
+
+  ## incident list
+  path('incidents/',views.incident_view,name='incident_view'),
+  
+  ## managed nodes list
+  path('managed_nodes/',views.managed_nodes_view,name='managed_nodes_view'),
+
+  
+
   #path('dashboard/', TemplateView.as_view(template_name='dashboard.html'), name='dashboard_view'),
   #path('home/',views.home_view,name='home_view')
   

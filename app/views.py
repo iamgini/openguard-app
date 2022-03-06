@@ -32,6 +32,24 @@ def dashboard_view(request):
   context = {'all_incidents':all_incidents}
   return render(request,'app/dashboard.html',context=context) 
 
+## incident list view --> template/app/incidents.html
+def incident_view(request):
+  ## order_by reverse - latest incident on top
+  all_incidents = models.Incidents.objects.all().order_by('-incident_time')
+
+  context = {'all_incidents':all_incidents}
+  return render(request,'app/incidents.html',context=context) 
+
+
+## incident list view --> template/app/managed_nodes.html
+def managed_nodes_view(request):
+  ## order_by managed nodes
+  all_managed_nodes = models.ManagedNodes.objects.all().order_by('instance_name')
+  #models.Incidents.objects.all().order_by('-incident_time')
+  context = {'all_managed_nodes':all_managed_nodes}
+  return render(request,'app/managed_nodes.html',context=context)
+
+
 ## Rest API View 
 class ManagedNodesViewSet(viewsets.ModelViewSet):
     queryset = ManagedNodes.objects.all().order_by('id')

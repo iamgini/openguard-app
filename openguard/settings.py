@@ -42,9 +42,11 @@ ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1','[::1]','192.168.56.1']
 ## Gineesh: 2. added 'api.apps.ApiConfig',
 ## Gineesh: 3. added 'rest_framework',
 ## Gineesh: 4. added 'corsheaders',
-## Gineesh: 5. added 'crispy_forms',
+## Gineesh: 5. added 'crispy_forms' - disabled
+## Gineesh: 6. added 'django_crontab',
 
 INSTALLED_APPS = [
+    'django_crontab',
     'api.apps.ApiConfig',
     'app.apps.AppConfig',
     'django.contrib.admin',
@@ -163,3 +165,8 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 ## Gineesh - bootstrap template
 ## skipped due to issues.
 #CRISPY_TEMPLATE_PACK = 'bootstrap'
+
+## Gineesh cron jobs
+CRONJOBS = [
+    ('* * * * *', 'app.cron.my_cron_job')
+]
