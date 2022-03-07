@@ -5,6 +5,10 @@ from rest_framework import routers
 from . import views
 from django.views.generic.base import TemplateView
 
+from .views import (ManagedNodeCreateView,
+                    ManagedNodeUpdateView,
+                    ManagedNodeDeleteView)
+
 router_nodes = routers.DefaultRouter()
 router_nodes.register(r'managednodes', views.ManagedNodesViewSet)
 
@@ -20,9 +24,15 @@ urlpatterns = [
 
   ## incident list
   path('incidents/',views.incident_view,name='incident_view'),
-  
+
   ## managed nodes list
   path('managed_nodes/',views.managed_nodes_view,name='managed_nodes_view'),
+  path('create_node',ManagedNodeCreateView.as_view(),name='create_node'),
+  path('update_node/<int:pk>/',ManagedNodeUpdateView.as_view(),name='update_node'),
+  path('delete_node/<int:pk>/',ManagedNodeDeleteView.as_view(),name="delete_node"),
+
+  ## credentials list
+  path('credentials/',views.credentials_view,name='credentials_view'),
 
   
 

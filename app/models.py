@@ -15,6 +15,12 @@ class ManagedNodes(models.Model):
   def details(self):
     return repr( dict( instance_name=self.instance_name, instance_name_connection=self.instance_name_connection, instance_credential=self.instance_credential, date_time=self.date_time ) )
 
+  ## source a model field into another model django
+  ## https://www.codegrepper.com/code-examples/python/source+a+model+field+into+another+model+django
+  #def save(self, *args, **kwargs):
+  #  self.instance_credential = self.instance_credential + 'SSH'
+  #  super(ManagedNodes, self).save(*args, **kwargs)
+
 ## Check Rules and playbook
 class Rules(models.Model):
   rule_name = models.CharField(max_length=50)
@@ -23,10 +29,12 @@ class Rules(models.Model):
 class Credentials(models.Model):
   cred_name = models.CharField(max_length=20)
   cred_type = models.CharField(max_length=50)
+  cred_ssh_user_name = models.CharField(default=' ', max_length=100)
+  cred_ssh_password = models.CharField(default=' ', max_length=100)
   cred_ssh_private_key = models.CharField(default=' ', max_length=5000)
 
   def __str__(self):
-    return f"{ self.cred_name} connects using {self.cred_type}"
+    return f"{self.cred_name}"
     
 # incident logs 
 class Incidents(models.Model):

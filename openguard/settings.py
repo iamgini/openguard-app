@@ -159,8 +159,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ## Gineesh
-LOGIN_REDIRECT_URL = '/app/dashboard'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 ## Gineesh - bootstrap template
 ## skipped due to issues.

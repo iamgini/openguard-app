@@ -1,10 +1,16 @@
 ## redirect for url redirection after user submit data
 from django.shortcuts import render,redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from .import models
 from django.http import HttpResponse
 from django.http.response import Http404, HttpResponse, HttpResponseNotFound, JsonResponse
 from rest_framework.parsers import JSONParser 
+
+## Import forms
+from .forms import ManagedNodeForm
+
+## auto forms and update
+from django.views.generic import TemplateView, CreateView,DetailView, FormView,ListView,UpdateView,DeleteView
 
 ## REST API
 from rest_framework import viewsets, status
@@ -49,6 +55,45 @@ def managed_nodes_view(request):
   context = {'all_managed_nodes':all_managed_nodes}
   return render(request,'app/managed_nodes.html',context=context)
 
+## Managed node create view
+class ManagedNodeCreateView(CreateView):
+    form = ManagedNodeForm
+    # AUTO CONNECTS TO A TEMPLATE WITH THE NAME:
+    # model_form.html
+    # Make sure to match this template name schema!!
+    model = ManagedNodes
+    # fields = ['name']
+    fields = ['instance_name', 'instance_name_connection','instance_credential']
+    #fields = '__all__'
+   
+    #def get_form_kwargs(self):
+    #  kwargs = super().get_form_kwargs()
+    #  kwargs['cred_type'] = self.request.user
+    #  return kwargs
+
+    
+    success_url = reverse_lazy('app:managed_nodes_view')
+
+class ManagedNodeUpdateView(UpdateView):
+    # Note! Uses model_form.html file as well
+    # same form as CreateView
+    model = ManagedNodes
+    #fields = "__all__"
+    fields = ['id','instance_name', 'instance_name_connection','instance_credential']
+    success_url = reverse_lazy('app:managed_nodes_view')
+
+class ManagedNodeDeleteView(DeleteView):
+    # Requires model_confirm_delete.html template name
+    model = ManagedNodes
+    success_url = reverse_lazy('app:managed_nodes_view')
+
+## credential list view --> template/app/credentials.html
+def credentials_view(request):
+  ## order_by managed nodes
+  all_credentials = models.Credentials.objects.all().order_by('cred_name')
+  #models.Incidents.objects.all().order_by('-incident_time')
+  context = {'all_credentials':all_credentials}
+  return render(request,'app/credentials.html',context=context)
 
 ## Rest API View 
 class ManagedNodesViewSet(viewsets.ModelViewSet):
@@ -101,8 +146,7 @@ def incident_report(request):
     #elif request.method == 'POST':
     if request.method == 'POST':
         incident_data = JSONParser().parse(request)
-        
-        #incident_serializer = IncidentsSerializerNew(data=incident_data)
+
         incident_serializer = IncidentsSerializerNew(data=incident_data, context={
            "incident_hostname": request.query_params.get("source_hostname")
         })
@@ -111,10 +155,16 @@ def incident_report(request):
         #new_log = open( 'application_logs/logs', "a")
         #new_log.write('\n' + my_incident_hostname + json.dumps( incident_data ))
         #new_log.close()
-
-        if incident_serializer.is_valid():
-            incident_serializer.save(incident_hostname=my_incident_hostname)
-            return JsonResponse(incident_serializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(incident_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        #return incident_data
+        if '.ansible/tmp/ansible-tmp' in incident_data['output']:
+            if incident_serializer.is_valid():
+                #incident_serializer.save    (incident_hostname=my_incident_hostname)
+                return JsonResponse(incident_serializer.data,   status=status.HTTP_204_NO_CONTENT) 
+            return JsonResponse(incident_serializer.errors,     status=status.HTTP_400_BAD_REQUEST)
+            #return incident_data
+        else:
+            if incident_serializer.is_valid():
+                incident_serializer.save    (incident_hostname=my_incident_hostname)
+                return JsonResponse(incident_serializer.data,   status=status.HTTP_201_CREATED) 
+            return JsonResponse(incident_serializer.errors,     status=status.HTTP_400_BAD_REQUEST)
+            #return incident_data
         
