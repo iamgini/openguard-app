@@ -1,13 +1,13 @@
 ## redirect for url redirection after user submit data
 from django.shortcuts import render,redirect
 from django.urls import reverse, reverse_lazy
-from .import models
+from .import models 
 from django.http import HttpResponse
 from django.http.response import Http404, HttpResponse, HttpResponseNotFound, JsonResponse
 from rest_framework.parsers import JSONParser 
 
 ## Import forms
-from .forms import ManagedNodeForm
+#from .forms import ManagedNodeForm
 
 ## auto forms and update
 from django.views.generic import TemplateView, CreateView,DetailView, FormView,ListView,UpdateView,DeleteView
@@ -15,7 +15,7 @@ from django.views.generic import TemplateView, CreateView,DetailView, FormView,L
 ## REST API
 from rest_framework import viewsets, status
 from .serializers import ManagedNodesSerializer, IncidentsSerializer, IncidentsSerializerNew
-from .models import ManagedNodes, Incidents
+from .models import ManagedNodes, Incidents, Credentials
 
 ## Refer to https://www.bezkoder.com/django-rest-api
 from rest_framework.decorators import api_view
@@ -57,21 +57,15 @@ def managed_nodes_view(request):
 
 ## Managed node create view
 class ManagedNodeCreateView(CreateView):
-    form = ManagedNodeForm
     # AUTO CONNECTS TO A TEMPLATE WITH THE NAME:
     # model_form.html
     # Make sure to match this template name schema!!
     model = ManagedNodes
-    # fields = ['name']
     fields = ['instance_name', 'instance_name_connection','instance_credential']
     #fields = '__all__'
    
-    #def get_form_kwargs(self):
-    #  kwargs = super().get_form_kwargs()
-    #  kwargs['cred_type'] = self.request.user
-    #  return kwargs
-
-    
+    #form_class = ManagedNodeForm
+    #template_name = 'app/managednodes_form.html'
     success_url = reverse_lazy('app:managed_nodes_view')
 
 class ManagedNodeUpdateView(UpdateView):
@@ -80,6 +74,9 @@ class ManagedNodeUpdateView(UpdateView):
     model = ManagedNodes
     #fields = "__all__"
     fields = ['id','instance_name', 'instance_name_connection','instance_credential']
+    #form_class = ManagedNodeForm
+    #template_name = 'app/managednodes_form.html'
+
     success_url = reverse_lazy('app:managed_nodes_view')
 
 class ManagedNodeDeleteView(DeleteView):
@@ -94,6 +91,39 @@ def credentials_view(request):
   #models.Incidents.objects.all().order_by('-incident_time')
   context = {'all_credentials':all_credentials}
   return render(request,'app/credentials.html',context=context)
+
+# credential create view
+class CredentialCreateView(CreateView):
+    model = Credentials
+    fields = ['cred_name', 
+              'cred_type',
+              'cred_ssh_user_name',
+              'cred_ssh_password',
+              'cred_ssh_private_key']
+    #fields = '__all__'
+   
+    #form_class = ManagedNodeForm
+    #template_name = 'app/managednodes_form.html'
+    success_url = reverse_lazy('app:credentials_view')
+
+# credential create view
+class CredentialUpdateView(UpdateView):
+    model = Credentials
+    fields = ['cred_name', 
+              'cred_type',
+              'cred_ssh_user_name',
+              'cred_ssh_password',
+              'cred_ssh_private_key']
+    #fields = '__all__'
+   
+    #form_class = ManagedNodeForm
+    #template_name = 'app/managednodes_form.html'
+    success_url = reverse_lazy('app:credentials_view')
+
+class CredentialDeleteView(DeleteView):
+    # Requires model_confirm_delete.html template name
+    model = Credentials
+    success_url = reverse_lazy('app:credentials_view')
 
 ## Rest API View 
 class ManagedNodesViewSet(viewsets.ModelViewSet):

@@ -7,6 +7,7 @@ class ManagedNodes(models.Model):
   instance_name = models.CharField(max_length=50)
   instance_name_connection = models.CharField(max_length=50)
   instance_credential = models.CharField(max_length=50)
+  #instance_credential_to_use = models.CharField(max_length=50,default='Username-Password')
   date_time = models.DateTimeField(default=timezone.now)
 
   def __str__(self):

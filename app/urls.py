@@ -7,7 +7,10 @@ from django.views.generic.base import TemplateView
 
 from .views import (ManagedNodeCreateView,
                     ManagedNodeUpdateView,
-                    ManagedNodeDeleteView)
+                    ManagedNodeDeleteView,
+                    CredentialCreateView,
+                    CredentialUpdateView,
+                    CredentialDeleteView)
 
 router_nodes = routers.DefaultRouter()
 router_nodes.register(r'managednodes', views.ManagedNodesViewSet)
@@ -33,6 +36,9 @@ urlpatterns = [
 
   ## credentials list
   path('credentials/',views.credentials_view,name='credentials_view'),
+  path('create_credential/',CredentialCreateView.as_view(),name='create_credential'),
+  path('update_credential/<int:pk>/',CredentialUpdateView.as_view(),name='update_credential'),
+  path('delete_credential/<int:pk>/',CredentialDeleteView.as_view(),name="delete_credential"),
 
   
 

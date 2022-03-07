@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    #'crispy_forms',
+    'crispy_forms',
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -164,7 +165,11 @@ LOGOUT_REDIRECT_URL = '/login/'
 
 ## Gineesh - bootstrap template
 ## skipped due to issues.
-#CRISPY_TEMPLATE_PACK = 'bootstrap'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+#CRISPY_TEMPLATE_PACK = 'bootstrap4' # 'uni_form'
+#'bootstrap'
 
 ## Gineesh cron jobs
 CRONJOBS = [

@@ -3,16 +3,21 @@
 <link href="signin.css" rel="stylesheet">
 {% block title %}Log In{% endblock %}
 
+{% load crispy_forms_tags %}         
 
   {% block content %}
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
       <h2>Log In</h2>
     </div>
-    <form method="post">
+    <div class="container" style="width: 400px !important;">
+    <form method="post" class="row g-3">
       {% csrf_token %}
-      {{ form.as_p }}
-      <button class="btn btn-success" type="submit">Log In</button>
+      {{ form | crispy }}
+      <div style="width: 150px;"> 
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </div>
     </form>
+  </div>
   </main>
 {% endblock %}

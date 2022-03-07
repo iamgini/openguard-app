@@ -33,12 +33,13 @@
     <!-- Custom styles for this template -->
     <link href="{% static 'signin.css' %}" rel="stylesheet">
   </head>
+  {% load crispy_forms_tags %}   
   <body class="text-center">
 <main class="form-signin">
 
   <form method="post">
     <img class="mb-4" src="{% static 'openguard_64x64.png'%}" alt="" width="64" height="64">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <h1 class="h3 mb-3 fw-normal">Sign in</h1>
     {% csrf_token %}
     {{ form.username }}
     <div class="form-floating">
@@ -56,7 +57,7 @@
       </label>
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+    <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
   </form>
 </main>
 
