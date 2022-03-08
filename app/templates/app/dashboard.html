@@ -25,38 +25,165 @@
       
       <!--
       <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-      -->
 
-      <h3>Reported Incidents</h3>
-      <div class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th scope="col">Time Reported</th>
-              <th scope="col">Incident Time</th>
-              <th scope="col">Hostname</th>
-              <th scope="col">Rule</th>
-              <th scope="col">Priority</th>
-              <th scope="col">Incident Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for incident in all_incidents %}
-            <tr>
-              <td>{{ incident.incident_time_reported }}</td>
-              <td>{{ incident.incident_time }}</td>
-              <td>{{ incident.incident_hostname }}</td>
-              <td>{{ incident.incident_rule }}</td>
-              <td>{{ incident.incident_priority }}</td>
-              <td>{{ incident.incident_output }}</td>
-            </tr>
-            {% endfor %}
-            
-          </tbody>
-        </table>
+      <h3>Reported Incidents</h3>-->
+
+      <!--first raw with single card-->
+      <!--
+      <div class="card shadow-sm">
+        <h5 class="card-header">Customers</h5>
+        <div class="card-body">
+          <h5 class="card-title">345k</h5>
+          <p class="card-text">Feb 1 - Apr 1, United States</p>
+          <p class="card-text text-success">18.2% increase since last month</p>
+        </div>
+      </div>
+      -->
+      <!--end of first raw with single card-->
+      <!--second raw with 4 card-->
+      <div class="row my-4">
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card shadow-sm">
+                <h5 class="card-header">Incidents</h5>
+                <div class="card-body">
+                  <h5 class="card-title">345k</h5>
+                  <p class="card-text">Feb 1 - Apr 1, United States</p>
+                  <p class="card-text text-success">18.2% increase since last month</p>
+                </div>
+              </div>
+        </div>
+        <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+            <div class="card shadow-sm">
+                <h5 class="card-header">Managed Nodes</h5>
+                <div class="card-body">
+                  <h5 class="card-title">$2.4k</h5>
+                  <p class="card-text">Feb 1 - Apr 1, United States</p>
+                  <p class="card-text text-success">4.6% increase since last month</p>
+                </div>
+              </div>
+        </div>
+        <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+            <div class="card shadow-sm">
+                <h5 class="card-header">Credentials</h5>
+                <div class="card-body">
+                  <h5 class="card-title">43</h5>
+                  <p class="card-text">Feb 1 - Apr 1, United States</p>
+                  <p class="card-text text-danger">2.6% decrease since last month</p>
+                </div>
+              </div>
+        </div>
+        <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+            <div class="card shadow-sm">
+                <h5 class="card-header">Traffic</h5>
+                <div class="card-body">
+                  <h5 class="card-title">64k</h5>
+                  <p class="card-text">Feb 1 - Apr 1, United States</p>
+                  <p class="card-text text-success">2.5% increase since last month</p>
+                </div>
+              </div>
+        </div>
+      </div>
+      <!--end of second raw with 4 cards-->
+
+      <!--3rd raw with 2 card-->
+      <!-- some more widget-->
+      <div class="row">
+        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+            <div class="card shadow-sm">
+                <h5 class="card-header">Latest Incidents</h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Order</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Customer</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Date</th>
+                                <th scope="col"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row">17371705</th>
+                                <td>Volt Premium Bootstrap 5 Dashboard</td>
+                                <td>johndoe@gmail.com</td>
+                                <td>€61.11</td>
+                                <td>Aug 31 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">17370540</th>
+                                <td>Pixel Pro Premium Bootstrap UI Kit</td>
+                                <td>jacob.monroe@company.com</td>
+                                <td>$153.11</td>
+                                <td>Aug 28 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">17371705</th>
+                                <td>Volt Premium Bootstrap 5 Dashboard</td>
+                                <td>johndoe@gmail.com</td>
+                                <td>€61.11</td>
+                                <td>Aug 31 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">17370540</th>
+                                <td>Pixel Pro Premium Bootstrap UI Kit</td>
+                                <td>jacob.monroe@company.com</td>
+                                <td>$153.11</td>
+                                <td>Aug 28 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">17371705</th>
+                                <td>Volt Premium Bootstrap 5 Dashboard</td>
+                                <td>johndoe@gmail.com</td>
+                                <td>€61.11</td>
+                                <td>Aug 31 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">17370540</th>
+                                <td>Pixel Pro Premium Bootstrap UI Kit</td>
+                                <td>jacob.monroe@company.com</td>
+                                <td>$153.11</td>
+                                <td>Aug 28 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                      <a href="#" class="btn btn-block btn-light">View all</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-4">
+          <div class="card">
+            <h5 class="card-header">Traffic last 6 months</h5>
+            <div class="card-body">
+                <div id="traffic-chart"></div>
+                
+            </div>
+          </div>
+        </div>
       </div>
     </main>
+    <br>
 
+    <script>
+      new Chartist.Line('#traffic-chart', {
+        labels: ['January', 'Februrary', 'March', 'April', 'May', 'June'],
+        series: [
+          [23000, 25000, 19000, 34000, 56000, 64000]
+        ]
+      }, {
+      low: 0,
+      showArea: true
+    });
+  </script>    
 
 {% endif %}
 {% endblock %}
