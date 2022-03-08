@@ -7,7 +7,7 @@ from django.http.response import Http404, HttpResponse, HttpResponseNotFound, Js
 from rest_framework.parsers import JSONParser 
 
 ## Import forms
-#from .forms import ManagedNodeForm
+from .forms import ManagedNodeForm, CredentialForm
 
 ## auto forms and update
 from django.views.generic import TemplateView, CreateView,DetailView, FormView,ListView,UpdateView,DeleteView
@@ -61,10 +61,10 @@ class ManagedNodeCreateView(CreateView):
     # model_form.html
     # Make sure to match this template name schema!!
     model = ManagedNodes
-    fields = ['instance_name', 'instance_name_connection','instance_credential']
+    #fields = ['instance_name', 'instance_name_connection','instance_credential']
     #fields = '__all__'
    
-    #form_class = ManagedNodeForm
+    form_class = ManagedNodeForm
     #template_name = 'app/managednodes_form.html'
     success_url = reverse_lazy('app:managed_nodes_view')
 
@@ -73,8 +73,8 @@ class ManagedNodeUpdateView(UpdateView):
     # same form as CreateView
     model = ManagedNodes
     #fields = "__all__"
-    fields = ['id','instance_name', 'instance_name_connection','instance_credential']
-    #form_class = ManagedNodeForm
+    #fields = ['id','instance_name', 'instance_name_connection','instance_credential']
+    form_class = ManagedNodeForm
     #template_name = 'app/managednodes_form.html'
 
     success_url = reverse_lazy('app:managed_nodes_view')
@@ -84,39 +84,47 @@ class ManagedNodeDeleteView(DeleteView):
     model = ManagedNodes
     success_url = reverse_lazy('app:managed_nodes_view')
 
+## for fetching credential list
+## https://simpleisbetterthancomplex.com/tutorial/2018/01/29/how-to-implement-dependent-or-chained-dropdown-list-with-django.html
+def load_credentials(request):
+    #credential_id = request.GET.get('credential')
+    all_credentials = models.Credentials.objects.all().order_by('pk')
+    context = {'all_credentials':all_credentials}
+    return render(request, 'app/credentials_dropdown_list_options.html', context=context)
+
 ## credential list view --> template/app/credentials.html
 def credentials_view(request):
-  ## order_by managed nodes
-  all_credentials = models.Credentials.objects.all().order_by('cred_name')
-  #models.Incidents.objects.all().order_by('-incident_time')
-  context = {'all_credentials':all_credentials}
-  return render(request,'app/credentials.html',context=context)
-
+    ## order_by managed nodes
+    all_credentials = models.Credentials.objects.all().order_by('cred_name')
+    #models.Incidents.objects.all().order_by('-incident_time')
+    context = {'all_credentials':all_credentials}
+    return render(request,'app/credentials.html',context=context)
+    
 # credential create view
 class CredentialCreateView(CreateView):
     model = Credentials
-    fields = ['cred_name', 
-              'cred_type',
-              'cred_ssh_user_name',
-              'cred_ssh_password',
-              'cred_ssh_private_key']
+    #fields = ['cred_name', 
+    #          'cred_type',
+    #          'cred_ssh_user_name',
+    #          'cred_ssh_password',
+    #          'cred_ssh_private_key']
     #fields = '__all__'
    
-    #form_class = ManagedNodeForm
+    form_class = CredentialForm
     #template_name = 'app/managednodes_form.html'
     success_url = reverse_lazy('app:credentials_view')
 
 # credential create view
 class CredentialUpdateView(UpdateView):
     model = Credentials
-    fields = ['cred_name', 
-              'cred_type',
-              'cred_ssh_user_name',
-              'cred_ssh_password',
-              'cred_ssh_private_key']
-    #fields = '__all__'
+    #fields = ['cred_name', 
+    #          'cred_type',
+    #          'cred_ssh_user_name',
+    #          'cred_ssh_password',
+    #          'cred_ssh_private_key']
+    ##fields = '__all__'
    
-    #form_class = ManagedNodeForm
+    form_class = CredentialForm
     #template_name = 'app/managednodes_form.html'
     success_url = reverse_lazy('app:credentials_view')
 

@@ -2,11 +2,21 @@ from datetime import datetime
 from django.utils import timezone
 from django.db import models
 
+CREDENTIAL_CHOICES= [
+    ('---', '---'),
+    ('New', 'new'),
+    ]
+
+CREDENTIAL_TYPES= [
+    ('Username-Password', 'Username-Password'),
+    ('SSH-Key', 'SSH-Key'),
+    ]
 # Create your models here.
 class ManagedNodes(models.Model):
   instance_name = models.CharField(max_length=50)
   instance_name_connection = models.CharField(max_length=50)
-  instance_credential = models.CharField(max_length=50)
+  instance_credential = models.CharField(max_length=50,
+                                  default='-')
   #instance_credential_to_use = models.CharField(max_length=50,default='Username-Password')
   date_time = models.DateTimeField(default=timezone.now)
 

@@ -43,11 +43,11 @@
           <tbody>
             {% for node in all_managed_nodes %}
             <tr>
-              <td><a href="/update_node/{{node.id}}">{{ node.instance_name }}</a></td>
+              <td><a href="{% url 'app:update_node' pk=node.id %}">{{ node.instance_name }}</a></td>
               <td>{{ node.instance_name_connection }}</td>
               <td>{{ node.instance_credential }}</td>
               <td>{{ node.date_time }}</td>
-              <td><a class="btn btn-danger" href="/delete_node/{{node.id}}" role="button">Delete</a></td>
+              <td><a class="btn btn-danger" href="{% url 'app:delete_node' pk=node.id %}" role="button">Delete</a></td>
             </tr>
             {% endfor %}
             

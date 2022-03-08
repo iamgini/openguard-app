@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import logging
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -175,3 +177,20 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 CRONJOBS = [
     ('* * * * *', 'app.cron.my_cron_job')
 ]
+
+## https://www.linuxtut.com/en/7716c6e46338768467eb/
+
+#if DEBUG:
+#    # will output to your console
+#    logging.basicConfig(
+#        level = logging.DEBUG,
+#        format = '%(asctime)s %(levelname)s %(message)s',
+#    )
+#else:
+#    # will output to logging file
+#    logging.basicConfig(
+#        level = logging.DEBUG,
+#        format = '%(asctime)s %(levelname)s %(message)s',
+#        filename = '/my_log_file.log',
+#        filemode = 'a'
+#    )

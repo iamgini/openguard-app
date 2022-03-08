@@ -1,0 +1,73 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Managed Nodes{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<!-- show dashboard if user.is_authenticated -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Managed Nodes</h1>
+        <!--
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+          </button>
+        </div>
+        -->
+      </div>
+      
+      <!--
+      <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+      -->
+        <div class="container" >
+            <h3>Managed node information</h3>
+            
+            <form method="post" class="form-floating" id="managednodeForm" data-credential-url="{% url 'app:ajax_load_credentials' %}" >
+                {% csrf_token %}
+                {{ form | crispy }}
+                <input type="submit" value="Submit" class="btn btn-success">
+            </form>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+      $("#id_instance_name").change(function () {
+        // check https://simpleisbetterthancomplex.com/tutorial/2018/01/29/how-to-implement-dependent-or-chained-dropdown-list-with-django.html
+      //$("#id_instance_name").change(function () {  
+      //$(document).ready(function () {
+        var url = $("#managednodeForm").attr("data-credential-url");  // get the url of the `ajax_load_credentials` view
+        var current_credential =  $("#id_instance_credential").val();  // grab the current credential details
+        var countryId = $(this).val();  // get the selected country ID from the HTML input
+  
+        $.ajax({                       // initialize an AJAX request
+          url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+          data: {
+            'country': countryId       // add the country id to the GET parameters
+          },
+          success: function (data) {   // `data` is the return of the `ajax_load_credentials` view function
+            //$("#id_instance_credential").html(data);  // replace the contents of the credential input with the data that came from the server
+
+            // Get select
+            var select = document.getElementById('id_instance_credential');
+            $(select).append(data);
+            //$(select).append('<option value=Option>Option</option>');
+            $(select).val(data[1]);
+            
+          }
+          
+        });
+  
+      });
+    </script>
+
+{% endif %}
+{% endblock %}

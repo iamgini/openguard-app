@@ -29,14 +29,13 @@
       -->
         <div class="container" >
             <h3>Managed node information</h3>
-            <form method="post" class="form-floating">
+            
+            <form method="post" class="form-floating" id="managednodeForm" >
                 {% csrf_token %}
                 {{ form | crispy }}
                 <input type="submit" value="Submit" class="btn btn-success">
             </form>
         </div>
     </main>
-
-
 {% endif %}
 {% endblock %}

@@ -30,16 +30,17 @@ urlpatterns = [
 
   ## managed nodes list
   path('managed_nodes/',views.managed_nodes_view,name='managed_nodes_view'),
-  path('create_node',ManagedNodeCreateView.as_view(),name='create_node'),
-  path('update_node/<int:pk>/',ManagedNodeUpdateView.as_view(),name='update_node'),
-  path('delete_node/<int:pk>/',ManagedNodeDeleteView.as_view(),name="delete_node"),
+  path('managed_nodes/create',ManagedNodeCreateView.as_view(),name='create_node'),
+  path('managed_nodes/update/<int:pk>/',ManagedNodeUpdateView.as_view(),name='update_node'),
+  path('managed_nodes/delete/<int:pk>/',ManagedNodeDeleteView.as_view(),name="delete_node"),
+  # for ajax loading of credentials
+  path('load-credentials/', views.load_credentials, name='ajax_load_credentials'),
 
   ## credentials list
   path('credentials/',views.credentials_view,name='credentials_view'),
-  path('create_credential/',CredentialCreateView.as_view(),name='create_credential'),
-  path('update_credential/<int:pk>/',CredentialUpdateView.as_view(),name='update_credential'),
-  path('delete_credential/<int:pk>/',CredentialDeleteView.as_view(),name="delete_credential"),
-
+  path('credentials/create/',CredentialCreateView.as_view(),name='create_credential'),
+  path('credentials/update/<int:pk>/',CredentialUpdateView.as_view(),name='update_credential'),
+  path('credentials/delete/<int:pk>/',CredentialDeleteView.as_view(),name="delete_credential"),
   
 
   #path('dashboard/', TemplateView.as_view(template_name='dashboard.html'), name='dashboard_view'),
