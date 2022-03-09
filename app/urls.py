@@ -25,12 +25,14 @@ router_incidents.register(r'incidents', views.IncidentsViewSet)
 app_name = 'app'
 urlpatterns = [
   #path('', views.index,name='index'),
-  path('',views.home_view,name='home_view'),
+  #path('',views.home_view,name='home_view'),
+  path('',views.dashboard_view,name='dashboard_view'),
   ## app dashboard
   path('dashboard/',views.dashboard_view,name='dashboard_view'),
 
   ## incident list
   path('incidents/',views.incident_view,name='incident_view'),
+  path('incidents/demo',views.incident_demo,name='incident_demo'),
 
   ## managed nodes list
   path('managed_nodes/',views.managed_nodes_view,name='managed_nodes_view'),

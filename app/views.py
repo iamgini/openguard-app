@@ -27,6 +27,21 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+## paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+## data trunctate for graph
+from django.db.models.functions import TruncDay
+import pytz
+from django_pivot.pivot import pivot
+from django_pivot.histogram import histogram
+
+## date
+import time
+import datetime
+from datetime import date,timedelta
+from django.utils import timezone
+
 # Create your views here.
 def index(request):
   return HttpResponse("This is app")
@@ -35,39 +50,95 @@ def home_view(request):
   #home template file
   return render(request,'app/home.html')  
 
+def incident_demo(request):
+    incident_list_graph_label = []
+    incident_duration = request.GET.get('duration', 7)
+    for duration in range(incident_duration,0,-1):
+        this_date_difference = (datetime.datetime.now(timezone.utc) - datetime.timedelta(days=duration)).strftime('%Y-%m-%d')
+        #this_date = 
+        inc_data = models.Incidents.objects.filter(incident_time__contains=this_date_difference).count()
+        incident_list_graph_label.append(this_date_difference)
+        #pass
+    #strftime("%m/%d/%Y, %H:%M:%S")
+    this_date = "2022-03-07" #datetime.now()
+    time_threshold = datetime.datetime.now(timezone.utc) - datetime.timedelta(days=1)
+    #dweek = now().today() - timedelta(days=7)
+    #inc_data = models.Incidents.objects.annotate(incident_times=TruncDay('incident_time',tzinfo=pytz.UTC)).values('incident_time')
+    #inc_data = models.Incidents.objects.filter(incident_time__gte=time_threshold)
+    inc_data = models.Incidents.objects.filter(incident_time__contains=this_date)
+    #inc_data = models.Incidents.objects.all()
+    #return analysis_count 
+    #inc_data = pivot(Incidents, 'incident_time', 'incident_priority', 'incident_rule')
+
+    return HttpResponse(incident_list_graph_label)
+    #return HttpResponse(this_date)
+
+
 ## dashboard with event logs
 @login_required
 def dashboard_view(request):
-  #home template file
-  all_incidents = models.Incidents.objects.all()
-  all_incidents_count = all_incidents.count()
 
-  all_managednodes = models.ManagedNodes.objects.all()
-  all_managednodes_count = all_managednodes.count()
+    ## declare empty lists
+    incident_list_graph_label = []
+    incident_list_graph_items_1 = []
+    # get the page ID
+    incident_duration = request.GET.get('duration', 7)
+    for duration in range(incident_duration,0,-1):
+        this_date_difference = (datetime.datetime.now(timezone.utc) - datetime.timedelta(days=duration)).strftime('%Y-%m-%d')
+        #this_date = 
+        inc_data = models.Incidents.objects.filter(incident_time__contains=this_date_difference).count()
+        incident_list_graph_label.append(this_date_difference)
+        incident_list_graph_items_1.append(inc_data)
 
-  all_credentials = models.Credentials.objects.all()
-  all_credentials_count = all_credentials.count()
+    #dweek = now().today() - timedelta(days=7)
 
-  all_rules = models.Rules.objects.all()
-  all_rules_count = all_rules.count()
+    #incident_list_graph_label = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Noday']
+    #incident_list_graph_items_1 = [2, 7, 4, 7, 3]
 
-  context = {'dashboard_data': {
-                'all_incidents_count': all_incidents_count,
-                'all_managednodes_count': all_managednodes_count,
-                'all_credentials_count': all_credentials_count,
-                'all_rules_count': all_rules_count
-                }
-            }
-  return render(request,'app/dashboard.html',context=context) 
+    all_incidents = models.Incidents.objects.all()
+    all_incidents_count = all_incidents.count()
+
+    all_managednodes = models.ManagedNodes.objects.all()
+    all_managednodes_count = all_managednodes.count()
+
+    all_credentials = models.Credentials.objects.all()
+    all_credentials_count = all_credentials.count()
+
+    all_rules = models.Rules.objects.all()
+    all_rules_count = all_rules.count()
+
+    context = {'dashboard_data': {
+                  'all_incidents_count': all_incidents_count,
+                  'all_managednodes_count': all_managednodes_count,
+                  'all_credentials_count': all_credentials_count,
+                  'all_rules_count': all_rules_count,
+                  'incident_list_graph_label': json.dumps(incident_list_graph_label),
+                  'incident_list_graph_items_1': json.dumps(incident_list_graph_items_1),
+                  }
+              }
+    return render(request,'app/dashboard.html',context=context) 
 
 ## incident list view --> template/app/incidents.html
 @login_required
 def incident_view(request):
-  ## order_by reverse - latest incident on top
-  all_incidents = models.Incidents.objects.all().order_by('-incident_time')
+    ## order_by reverse - latest incident on top
+    all_incidents = models.Incidents.objects.all().order_by('-incident_time')
+  
+    # get the page ID
+    page = request.GET.get('page', 1)
 
-  context = {'all_incidents':all_incidents}
-  return render(request,'app/incidents.html',context=context) 
+    paginator = Paginator(all_incidents, 10)
+    ##page_range = paginator.get_elided_page_range(number=page)
+
+    try:
+        incidents = paginator.page(page)
+    except PageNotAnInteger:
+        incidents = paginator.page(1)
+    except EmptyPage:
+        incidents = paginator.page(paginator.num_pages)
+
+    context = {'incidents':incidents}
+    return render(request,'app/incidents.html',context=context) 
 
 @login_required
 def rules_view(request):

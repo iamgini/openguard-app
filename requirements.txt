@@ -17,3 +17,6 @@ crispy_bootstrap5
 
 #celery>=5.2.3
 #redis
+
+## for pivot and graph
+django-pivot
