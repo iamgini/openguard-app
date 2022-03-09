@@ -165,6 +165,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/login/'
 
+## Gineesh
+LOGIN_URL = '/login/'
+
 ## Gineesh - bootstrap template
 ## skipped due to issues.
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

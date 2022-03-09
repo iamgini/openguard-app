@@ -7,21 +7,25 @@ from django.http.response import Http404, HttpResponse, HttpResponseNotFound, Js
 from rest_framework.parsers import JSONParser 
 
 ## Import forms
-from .forms import ManagedNodeForm, CredentialForm
+from .forms import ManagedNodeForm, CredentialForm, RuleForm
 
-## auto forms and update
+## auto forms and update - class based views (CBV)
 from django.views.generic import TemplateView, CreateView,DetailView, FormView,ListView,UpdateView,DeleteView
 
 ## REST API
 from rest_framework import viewsets, status
 from .serializers import ManagedNodesSerializer, IncidentsSerializer, IncidentsSerializerNew
-from .models import ManagedNodes, Incidents, Credentials
+from .models import ManagedNodes, Incidents, Credentials, Rules
 
 ## Refer to https://www.bezkoder.com/django-rest-api
 from rest_framework.decorators import api_view
 
 ## for json to text converter and wrinting to log file
 import json
+
+## ensure login is there using @login_required
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 def index(request):
@@ -32,13 +36,32 @@ def home_view(request):
   return render(request,'app/home.html')  
 
 ## dashboard with event logs
+@login_required
 def dashboard_view(request):
   #home template file
   all_incidents = models.Incidents.objects.all()
-  context = {'all_incidents':all_incidents}
+  all_incidents_count = all_incidents.count()
+
+  all_managednodes = models.ManagedNodes.objects.all()
+  all_managednodes_count = all_managednodes.count()
+
+  all_credentials = models.Credentials.objects.all()
+  all_credentials_count = all_credentials.count()
+
+  all_rules = models.Rules.objects.all()
+  all_rules_count = all_rules.count()
+
+  context = {'dashboard_data': {
+                'all_incidents_count': all_incidents_count,
+                'all_managednodes_count': all_managednodes_count,
+                'all_credentials_count': all_credentials_count,
+                'all_rules_count': all_rules_count
+                }
+            }
   return render(request,'app/dashboard.html',context=context) 
 
 ## incident list view --> template/app/incidents.html
+@login_required
 def incident_view(request):
   ## order_by reverse - latest incident on top
   all_incidents = models.Incidents.objects.all().order_by('-incident_time')
@@ -46,8 +69,28 @@ def incident_view(request):
   context = {'all_incidents':all_incidents}
   return render(request,'app/incidents.html',context=context) 
 
+@login_required
+def rules_view(request):
+  ## order_by reverse - latest incident on top
+  all_rules = models.Rules.objects.all().order_by('rule_name')
+  context = {'all_rules':all_rules}
+  return render(request,'app/rules.html',context=context) 
 
-## incident list view --> template/app/managed_nodes.html
+# rules create view
+class RuleCreateView(LoginRequiredMixin, CreateView):
+    model = Rules
+    form_class = RuleForm
+    success_url = reverse_lazy('app:rules_view')
+class RuleUpdateView(LoginRequiredMixin, UpdateView):
+    model = Rules
+    form_class = RuleForm
+    success_url = reverse_lazy('app:rules_view')
+    
+class RuleDeleteView(LoginRequiredMixin, DeleteView):
+    model = Rules
+    success_url = reverse_lazy('app:rules_view')
+
+@login_required
 def managed_nodes_view(request):
   ## order_by managed nodes
   all_managed_nodes = models.ManagedNodes.objects.all().order_by('instance_name')
@@ -56,7 +99,7 @@ def managed_nodes_view(request):
   return render(request,'app/managed_nodes.html',context=context)
 
 ## Managed node create view
-class ManagedNodeCreateView(CreateView):
+class ManagedNodeCreateView(LoginRequiredMixin, CreateView):
     # AUTO CONNECTS TO A TEMPLATE WITH THE NAME:
     # model_form.html
     # Make sure to match this template name schema!!
@@ -68,7 +111,7 @@ class ManagedNodeCreateView(CreateView):
     #template_name = 'app/managednodes_form.html'
     success_url = reverse_lazy('app:managed_nodes_view')
 
-class ManagedNodeUpdateView(UpdateView):
+class ManagedNodeUpdateView(LoginRequiredMixin, UpdateView):
     # Note! Uses model_form.html file as well
     # same form as CreateView
     model = ManagedNodes
@@ -79,7 +122,7 @@ class ManagedNodeUpdateView(UpdateView):
 
     success_url = reverse_lazy('app:managed_nodes_view')
 
-class ManagedNodeDeleteView(DeleteView):
+class ManagedNodeDeleteView(LoginRequiredMixin, DeleteView):
     # Requires model_confirm_delete.html template name
     model = ManagedNodes
     success_url = reverse_lazy('app:managed_nodes_view')
@@ -101,7 +144,7 @@ def credentials_view(request):
     return render(request,'app/credentials.html',context=context)
     
 # credential create view
-class CredentialCreateView(CreateView):
+class CredentialCreateView(LoginRequiredMixin, CreateView):
     model = Credentials
     #fields = ['cred_name', 
     #          'cred_type',
@@ -115,7 +158,7 @@ class CredentialCreateView(CreateView):
     success_url = reverse_lazy('app:credentials_view')
 
 # credential create view
-class CredentialUpdateView(UpdateView):
+class CredentialUpdateView(LoginRequiredMixin, UpdateView):
     model = Credentials
     #fields = ['cred_name', 
     #          'cred_type',
@@ -128,7 +171,7 @@ class CredentialUpdateView(UpdateView):
     #template_name = 'app/managednodes_form.html'
     success_url = reverse_lazy('app:credentials_view')
 
-class CredentialDeleteView(DeleteView):
+class CredentialDeleteView(LoginRequiredMixin, DeleteView):
     # Requires model_confirm_delete.html template name
     model = Credentials
     success_url = reverse_lazy('app:credentials_view')

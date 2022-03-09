@@ -21,7 +21,7 @@ class ManagedNodes(models.Model):
   date_time = models.DateTimeField(default=timezone.now)
 
   def __str__(self):
-    return f"{ self.instance_name} connects using {self.instance_credential}"
+    return f"{ self.instance_name}"
 
   def details(self):
     return repr( dict( instance_name=self.instance_name, instance_name_connection=self.instance_name_connection, instance_credential=self.instance_credential, date_time=self.date_time ) )
@@ -36,6 +36,9 @@ class ManagedNodes(models.Model):
 class Rules(models.Model):
   rule_name = models.CharField(max_length=50)
   rule_fix_playbook = models.CharField(max_length=50)
+  def __str__(self):
+    return f"{ self.rule_name}"
+
 
 class Credentials(models.Model):
   cred_name = models.CharField(max_length=20)
@@ -64,7 +67,7 @@ class Incidents(models.Model):
   #incident_output_fields_new = models.JSONField(default=dict)
 
   def __str__(self):
-    return f"{ self.incident_time} connects using {self.incident_output}"
+    return f"{ self.incident_time} - {self.incident_output}"
 
   def details(self):
     return repr( dict( incident_time_reported=self.incident_time_reported, incident_time=self.incident_time, incident_priority=self.incident_priority, incident_rule=self.incident_rule, incident_output=self.incident_output, incident_hostname=self.incident_hostname ) )

@@ -10,7 +10,11 @@ from .views import (ManagedNodeCreateView,
                     ManagedNodeDeleteView,
                     CredentialCreateView,
                     CredentialUpdateView,
-                    CredentialDeleteView)
+                    CredentialDeleteView,
+                    RuleCreateView,
+                    RuleUpdateView,
+                    RuleDeleteView
+                    )
 
 router_nodes = routers.DefaultRouter()
 router_nodes.register(r'managednodes', views.ManagedNodesViewSet)
@@ -36,13 +40,18 @@ urlpatterns = [
   # for ajax loading of credentials
   path('load-credentials/', views.load_credentials, name='ajax_load_credentials'),
 
-  ## credentials list
+  ## credentials URLs
   path('credentials/',views.credentials_view,name='credentials_view'),
   path('credentials/create/',CredentialCreateView.as_view(),name='create_credential'),
   path('credentials/update/<int:pk>/',CredentialUpdateView.as_view(),name='update_credential'),
   path('credentials/delete/<int:pk>/',CredentialDeleteView.as_view(),name="delete_credential"),
   
-
+  ## Rules URLs
+  path('rules/',views.rules_view,name='rules_view'),
+  path('rules/create/',RuleCreateView.as_view(),name='create_rule'),
+  path('rules/update/<int:pk>/',RuleUpdateView.as_view(),name='update_rule'),
+  path('rules/delete/<int:pk>/',RuleDeleteView.as_view(),name="delete_rule"),
+  
   #path('dashboard/', TemplateView.as_view(template_name='dashboard.html'), name='dashboard_view'),
   #path('home/',views.home_view,name='home_view')
   

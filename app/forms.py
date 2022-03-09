@@ -3,7 +3,7 @@ from django.forms import ModelForm
 #from django.forms import ModelForm
 #from crispy_forms.helper import FormHelper
 #from crispy_forms.layout import Submit
-from .models import ManagedNodes, Credentials
+from .models import ManagedNodes, Credentials, Rules
 from .models import Credentials
 
 class ManagedNodeForm(forms.ModelForm):
@@ -99,3 +99,43 @@ class CredentialForm(forms.ModelForm):
         self.fields['cred_type'].choices = CREDENTIAL_TYPES
 
     cred_type = forms.ChoiceField()
+
+class RuleForm(forms.ModelForm):
+    class Meta:
+      model = Rules
+#      #fields = "__all__"
+      fields = ('rule_name',
+                'rule_fix_playbook',
+                )
+      labels = {
+            'rule_name': ('Rule name'),
+            'rule_fix_playbook': ('Name of playbook to execute'),
+          }
+      help_texts = {
+            'rule_name': ('Use "FALCO_OGRULE_" as prefix to identify.'),
+            'rule_fix_playbook': ('This Ansible playbook will be used to remediate the violation of the rule.'),
+        }
+      #error_messages = {
+      #      'name': {
+      #          'max_length': _("This writer's name is too long."),
+      #      },
+      #  }
+
+      #widgets = {
+      #      #'instance_credential': forms.Select(attrs={'class': 'form-control'}),
+      #      'instance_credential': forms.Select(attrs={'class': 'form-control'}),
+      #  }
+      #  #'instance_credential': forms.Select(choices=CREDENTIAL_CHOICES,attrs={'class': 'form-control'}),
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['rule_name'].initial = "FALCO_OGRULE_"
+        #self.fields['instance_credential'].queryset = Credentials.objects.none()
+        #CREDENTIAL_TYPES= [
+        #  ('Username-Password', 'Username-Password'),
+        #  ('SSH-Key', 'SSH-Key'),
+        #  ]
+        #credential_choices = [(str(cred.id) + '_' + cred.cred_name, str(cred.id) + '_' + cred.cred_name) for cred in Credentials.objects.all().order_by('pk')]
+        #self.fields['cred_type'].choices = CREDENTIAL_TYPES
+
+    #cred_type = forms.ChoiceField()    

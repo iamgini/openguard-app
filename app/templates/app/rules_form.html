@@ -1,0 +1,33 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Add or Update Rule{% endblock %}
+{% load crispy_forms_tags %}
+
+
+        {%block content_header%}  
+        {% if user.is_authenticated %}
+        <h1 class="h2">Save Security Rule</h1>
+        {% endif %}
+        {% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+      <div class="row ">
+        <div class="col-12">
+          <div class="card shadow-sm">
+            <h5 class="card-header">Rule information</h5>
+            <div class="card-body">
+              <form method="post" class="form-floating">
+                  {% csrf_token %}
+                  {{ form | crispy }}
+                  <input type="submit" value="Submit" class="btn btn-success">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+{% endif %}
+
+{% endblock %}
+

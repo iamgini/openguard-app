@@ -3,52 +3,56 @@
 
 {% block title %}Home{% endblock %}
 
+{%block content_header%}  
+{% if user.is_authenticated %}
+<h1 class="h2">Dashboard</h1>
+{% endif %}
+{% endblock %}
+
 {% block content %}
 {% if user.is_authenticated %}
-<!-- show dashboard if user.is_authenticated -->
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
-        <!--
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-          </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
-        </div>
-        -->
-      </div>
-      
-      <!--
-      <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-
-      <h3>Reported Incidents</h3>-->
 
       <!--first raw with single card-->
       <!--
-      <div class="card shadow-sm">
-        <h5 class="card-header">Customers</h5>
-        <div class="card-body">
-          <h5 class="card-title">345k</h5>
-          <p class="card-text">Feb 1 - Apr 1, United States</p>
-          <p class="card-text text-success">18.2% increase since last month</p>
+        <div class="card shadow-sm">
+          <h5 class="card-header">Customers</h5>
+          <div class="card-body">
+            <h5 class="card-title">345k</h5>
+            <p class="card-text">Feb 1 - Apr 1, United States</p>
+            <p class="card-text text-success">18.2% increase since last month</p>
+          </div>
         </div>
-      </div>
       -->
+
       <!--end of first raw with single card-->
+      <div class="row my-4">
+        <div class="row"> 
+          <div class="col-12 col-sm-6 col-md-6 mb-4 mb-lg-0">
+            <div class="card shadow-sm">
+              <h5 class="card-header">Incidents</h5>
+              <div class="card-body">
+                  <div id="chart_incidents"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 mb-4 mb-lg-0">
+            <div class="card shadow-sm">
+              <h5 class="card-header">Status</h5>
+              <div class="card-body">
+                  <div id="chart_incidents_status"></div>
+              </div>
+          </div> 
+       </div> 
+      </div>
       <!--second raw with 4 card-->
       <div class="row my-4">
         <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
             <div class="card shadow-sm">
                 <h5 class="card-header">Incidents</h5>
                 <div class="card-body">
-                  <h5 class="card-title">345k</h5>
-                  <p class="card-text">Feb 1 - Apr 1, United States</p>
-                  <p class="card-text text-success">18.2% increase since last month</p>
+                  <h1 class="card-title">{{ dashboard_data.all_incidents_count }}</h5>
+                  <!--<p class="card-text">Feb 1 - Apr 1, United States</p>
+                  <p class="card-text text-success">18.2% increase since last month</p>-->
                 </div>
               </div>
         </div>
@@ -56,9 +60,9 @@
             <div class="card shadow-sm">
                 <h5 class="card-header">Managed Nodes</h5>
                 <div class="card-body">
-                  <h5 class="card-title">$2.4k</h5>
-                  <p class="card-text">Feb 1 - Apr 1, United States</p>
-                  <p class="card-text text-success">4.6% increase since last month</p>
+                  <h1 class="card-title">{{ dashboard_data.all_managednodes_count }}</h5>
+                  <!--<p class="card-text">Feb 1 - Apr 1, United States</p>
+                  <p class="card-text text-success">4.6% increase since last month</p>-->
                 </div>
               </div>
         </div>
@@ -66,25 +70,62 @@
             <div class="card shadow-sm">
                 <h5 class="card-header">Credentials</h5>
                 <div class="card-body">
-                  <h5 class="card-title">43</h5>
-                  <p class="card-text">Feb 1 - Apr 1, United States</p>
-                  <p class="card-text text-danger">2.6% decrease since last month</p>
+                  <h1 class="card-title">{{ dashboard_data.all_credentials_count }}</h5>
+                    <!--<p class="card-text">Feb 1 - Apr 1, United States</p>
+                    <p class="card-text text-success">4.6% increase since last month</p>-->
                 </div>
               </div>
         </div>
         <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
             <div class="card shadow-sm">
-                <h5 class="card-header">Traffic</h5>
+                <h5 class="card-header">Rules</h5>
                 <div class="card-body">
-                  <h5 class="card-title">64k</h5>
-                  <p class="card-text">Feb 1 - Apr 1, United States</p>
-                  <p class="card-text text-success">2.5% increase since last month</p>
+                  <h1 class="card-title">{{ dashboard_data.all_rules_count }}</h5>
+                    <!--<p class="card-text">Feb 1 - Apr 1, United States</p>
+                    <p class="card-text text-success">4.6% increase since last month</p>-->
                 </div>
               </div>
         </div>
       </div>
       <!--end of second raw with 4 cards-->
+      <div class="row my-3">
 
+        <div class="col-sm-6 col-md-4">
+          <div class="card border-white">
+            <div class="card-header">Heading 1</div>
+            <div class="card-body">
+              <p class="card-text">Some quick example text to build
+                on the card
+                title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+      
+      
+      <div class="col-sm-6 col-md-4">
+        <div class="card border-white">
+          <div class="card-header">Heading 2</div>
+          <div class="card-body">
+            <p class="card-text">Some quick example text to build
+              on the card
+              title and make up the bulk of the card's content.</p>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="col-sm-6 col-md-4">
+        <div class="card border-white">
+          <div class="card-header">Heading 3</div>
+          <div class="card-body">
+            <p class="card-text">Some quick example text to build
+              on the card
+              title and make up the bulk of the card's content.</p>
+          </div>
+        </div>
+      </div>
+      
+      </div>
       <!--3rd raw with 2 card-->
       <!-- some more widget-->
       <div class="row">
@@ -161,7 +202,7 @@
             </div>
         </div>
         <div class="col-12 col-xl-4">
-          <div class="card">
+          <div class="card shadow-sm">
             <h5 class="card-header">Traffic last 6 months</h5>
             <div class="card-body">
                 <div id="traffic-chart"></div>
@@ -170,8 +211,6 @@
           </div>
         </div>
       </div>
-    </main>
-    <br>
 
     <script>
       new Chartist.Line('#traffic-chart', {
@@ -183,6 +222,33 @@
       low: 0,
       showArea: true
     });
+    </script>    
+    <script>
+    new Chartist.Line('#chart_incidents', {
+      labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      series: [
+        [12, 9, 7, 8, 5],
+        [2, 1, 3.5, 7, 3],
+        [1, 3, 4, 5, 6]
+      ]
+    }, {
+      fullWidth: true,
+      chartPadding: {
+        right: 40
+      }
+    });
+
+    //incident fix vs pending
+    new Chartist.Pie('#chart_incidents_status', {
+      series: [20, 10, 30, 40]
+    }, {
+      donut: true,
+      donutWidth: 60,
+      donutSolid: true,
+      startAngle: 270,
+      showLabel: true
+    });
+    
   </script>    
 
 {% endif %}

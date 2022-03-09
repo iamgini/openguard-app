@@ -3,60 +3,53 @@
 
 {% block title %}Managed Nodes{% endblock %}
 
-{% block content %}
+
+{%block content_header%}
 {% if user.is_authenticated %}
-<!-- show dashboard if user.is_authenticated -->
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Managed Nodes</h1>
-        <a class="btn btn-primary" href="{% url 'app:create_node' %}" role="button">Add Node</a>
-        <!--
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-          </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
-        </div>
-        -->
-      </div>
-      
-      <!--
-      <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-      -->
-
-      <!--<h3>Reported Incidents</h3>-->
-      <div class="card shadow-sm">
-        <table class="table ">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Connection Name</th>
-              <th scope="col">Credential</th>
-              <th scope="col">Added on</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for node in all_managed_nodes %}
-            <tr>
-              <th scope="row"><a href="{% url 'app:update_node' pk=node.id %}">{{ node.instance_name }}</a></td>
-              <td>{{ node.instance_name_connection }}</td>
-              <td>{{ node.instance_credential }}</td>
-              <td>{{ node.date_time }}</td>
-              <td><a class="btn btn-danger" href="{% url 'app:delete_node' pk=node.id %}" role="button">Delete</a></td>
-            </tr>
-            {% endfor %}
-            
-          </tbody>
-        </table>
-      </div>
-
-    </main>
-
-
+<h1 class="h2">Managed Nodes</h1>
+<a class="btn btn-primary" href="{% url 'app:create_node' %}" role="button">Add Node</a>
 {% endif %}
-{% endblock %}
+        {% endblock %}
+
+      {% block content %}
+      {% if user.is_authenticated %}
+      <div class="row ">
+        <div class="col-12">
+          <div class="card shadow-sm">
+            <h5 class="card-header">Managed nodes</h5>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover"">
+                  <thead>
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Connection Name</th>
+                      <th scope="col">Credential</th>
+                      <th scope="col">Added on</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for node in all_managed_nodes %}
+                    <tr>
+                      <th scope="row"><a href="{% url 'app:update_node' pk=node.id %}">{{ node.instance_name }}</a></td>
+                      <td>{{ node.instance_name_connection }}</td>
+                      <td>{{ node.instance_credential }}</td>
+                      <td>{{ node.date_time }}</td>
+                      <td><a class="btn btn-danger" href="{% url 'app:delete_node' pk=node.id %}" role="button">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {% endif %}
+    {% endblock %}
+
+
+
