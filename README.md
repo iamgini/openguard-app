@@ -3,9 +3,16 @@
 OpenGuard application source code
 
 - [OpenGuard - Security Automation](#openguard---security-automation)
+  - [Highlights](#highlights)
   - [Task tracker](#task-tracker)
   - [Contribution](#contribution)
   - [Appendix](#appendix)
+
+## Highlights
+
+- all opensource tools
+- seperate agent other than monitoring tool
+
 
 ## Task tracker
 
@@ -29,6 +36,9 @@ OpenGuard application source code
   - Web API - good
   - Connection - good
   - Token - TBC
+- Pending
+  - fix timezone if needed
+
 
 ## Contribution
 

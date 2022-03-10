@@ -12,6 +12,9 @@ from .forms import ManagedNodeForm, CredentialForm, RuleForm
 ## auto forms and update - class based views (CBV)
 from django.views.generic import TemplateView, CreateView,DetailView, FormView,ListView,UpdateView,DeleteView
 
+## for fix jobs to run cron calls
+from .cron import my_cron_job
+
 ## REST API
 from rest_framework import viewsets, status
 from .serializers import ManagedNodesSerializer, IncidentsSerializer, IncidentsSerializerNew
@@ -31,10 +34,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 ## data trunctate for graph
-from django.db.models.functions import TruncDay
-import pytz
-from django_pivot.pivot import pivot
-from django_pivot.histogram import histogram
+#from django.db.models.functions import TruncDay
+#import pytz
+#from django_pivot.pivot import pivot
+#from django_pivot.histogram import histogram
 
 ## date
 import time
@@ -73,6 +76,12 @@ def incident_demo(request):
     return HttpResponse(incident_list_graph_label)
     #return HttpResponse(this_date)
 
+## for cron jobs
+def run_fix_jobs(request):
+    time_now = datetime.datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
+
+    job_out = my_cron_job()
+    return HttpResponse( str(time_now) + ': Jobs checked')
 
 ## dashboard with event logs
 @login_required
@@ -224,6 +233,8 @@ class ManagedNodeDeleteView(LoginRequiredMixin, DeleteView):
 
 ## for fetching credential list
 ## https://simpleisbetterthancomplex.com/tutorial/2018/01/29/how-to-implement-dependent-or-chained-dropdown-list-with-django.html
+
+## Update, not using this
 def load_credentials(request):
     #credential_id = request.GET.get('credential')
     all_credentials = models.Credentials.objects.all().order_by('pk')
@@ -328,6 +339,7 @@ def incident_report(request):
         })
 
         my_incident_hostname = request.query_params.get("source_hostname")
+        this_incident_report_agent = request.META['HTTP_USER_AGENT']
         #new_log = open( 'application_logs/logs', "a")
         #new_log.write('\n' + my_incident_hostname + json.dumps( incident_data ))
         #new_log.close()
@@ -339,7 +351,7 @@ def incident_report(request):
             #return incident_data
         else:
             if incident_serializer.is_valid():
-                incident_serializer.save    (incident_hostname=my_incident_hostname)
+                incident_serializer.save    (incident_hostname=my_incident_hostname, incident_report_agent=this_incident_report_agent)
                 return JsonResponse(incident_serializer.data,   status=status.HTTP_201_CREATED) 
             return JsonResponse(incident_serializer.errors,     status=status.HTTP_400_BAD_REQUEST)
             #return incident_data

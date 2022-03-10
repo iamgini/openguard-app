@@ -29,34 +29,35 @@ def my_cron_job():
         rule_detected = incident.incident_rule
 
         managed_node = models.ManagedNodes.objects.all().filter(instance_name=this_hostname).order_by('instance_name').first()
-        
-        node_connection_name = getattr(managed_node,'instance_credential')
-        node_connection_method = getattr(managed_node,'instance_name_connection')
-        
-        try:
-            rule_list = models.Rules.objects.all().filter(rule_name = rule_detected).order_by('rule_name').first()
-            rule_fix_playbook = getattr(rule_list,'rule_fix_playbook')
-            #print(rule_fix_playbook)
 
-            ## Call Ansible Runner
-            ansible_output = run_ansible(this_hostname, node_connection_method,rule_fix_playbook)
-            #print(ansible_output)
-            if ansible_output == 0:
-                try:
-                    incident.incident_status = 'FIXED'
-                    incident.incident_time_fixed = timezone.now
-                    incident.incident_fix_comments = 'Updated item ' + str(incident.id)
-                    incident.save()
-                except Exception as incident_entry_update:
-                    print(incident_entry_update)
-                    
-            new_log = open( 'application_logs/logs', "a")
-            new_log.write('\n' + timestampStr + ": " + str(incident.    incident_hostname) + "/" + incident.incident_rule + "/" + str   (incident.incident_time))
-            #new_log.write('\n'  + json.dumps( incident.    #incident_time_reported ))
-            new_log.close()
-        except Exception as ansible_exception:
-            print(ansible_exception)
-            print("No rules found")
+        if managed_node != None:
+            node_connection_name = getattr(managed_node,'instance_name_connection')
+            node_connection_method = getattr(managed_node,'instance_credential')
+
+            try:
+                rule_list = models.Rules.objects.all().filter(rule_name = rule_detected).order_by('rule_name').first()
+                rule_fix_playbook = getattr(rule_list,'rule_fix_playbook')
+                #print(rule_fix_playbook)
+
+                ## Call Ansible Runner
+                ansible_output = run_ansible(this_hostname, node_connection_name,rule_fix_playbook)
+                #print(ansible_output)
+                if ansible_output == 0:
+                    try:
+                        incident.incident_status = 'FIXED'
+                        incident.incident_time_fixed = timezone.now
+                        incident.incident_fix_comments = 'Updated item ' + str(incident.id)
+                        incident.save()
+                    except Exception as incident_entry_update:
+                        print(incident_entry_update)
+
+                new_log = open( 'application_logs/logs', "a")
+                new_log.write('\n' + timestampStr + ": " + str(incident.incident_hostname) + "/" + incident.incident_rule + "/" + str(incident.incident_time))
+                #new_log.write('\n'  + json.dumps( incident.    #incident_time_reported ))
+                new_log.close()
+            except Exception as ansible_exception:
+                print(ansible_exception)
+                print("No rules found")
 ## Ansible runner 
 def run_ansible(node_names, ansible_host_name, playbook_file):
 
@@ -68,7 +69,7 @@ def run_ansible(node_names, ansible_host_name, playbook_file):
     #        'Ubuntu-20-CP': {
     #            'ansible_host': '192.168.56.35',
     #            'ansible_user': 'devops',
-    #            'ansible_password': 'devops'
+    #            'ansible_password': 'devopssssss'
     #        }
     #    },
     #}

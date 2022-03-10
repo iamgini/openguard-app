@@ -34,6 +34,9 @@ urlpatterns = [
   path('incidents/',views.incident_view,name='incident_view'),
   path('incidents/demo',views.incident_demo,name='incident_demo'),
 
+  ## for running jobs
+  path('jobs/run',views.run_fix_jobs,name='run_fix_jobs'),
+
   ## managed nodes list
   path('managed_nodes/',views.managed_nodes_view,name='managed_nodes_view'),
   path('managed_nodes/create',ManagedNodeCreateView.as_view(),name='create_node'),
@@ -57,9 +60,11 @@ urlpatterns = [
   #path('dashboard/', TemplateView.as_view(template_name='dashboard.html'), name='dashboard_view'),
   #path('home/',views.home_view,name='home_view')
   
-  ## API URLS
+  ## API URLS -
   path('api/nodes/', include(router_nodes.urls)),
   path('api/nodesv2/', views.nodes_list, name='nodes_list_api'),
+
+  ## http://IP:8000/api/incidents/
   path('api/incidents/', include(router_incidents.urls)),
   path('api/incident_report/', views.incident_report,name='incident_report_api'),
   #path('api/incident_report/<str:hostname>/', views.incident_report,name='incident_report_api'),

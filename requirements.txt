@@ -19,4 +19,4 @@ crispy_bootstrap5
 #redis
 
 ## for pivot and graph
-django-pivot
+#django-pivot

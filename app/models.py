@@ -13,7 +13,7 @@ CREDENTIAL_TYPES= [
     ]
 # Create your models here.
 class ManagedNodes(models.Model):
-  instance_name = models.CharField(max_length=50)
+  instance_name = models.CharField(max_length=50,unique=True)
   instance_name_connection = models.CharField(max_length=50)
   instance_credential = models.CharField(max_length=50,
                                   default='-')
@@ -34,14 +34,14 @@ class ManagedNodes(models.Model):
 
 ## Check Rules and playbook
 class Rules(models.Model):
-  rule_name = models.CharField(max_length=50)
+  rule_name = models.CharField(max_length=50,unique=True)
   rule_fix_playbook = models.CharField(max_length=50)
   def __str__(self):
     return f"{ self.rule_name}"
 
 
 class Credentials(models.Model):
-  cred_name = models.CharField(max_length=20)
+  cred_name = models.CharField(max_length=20,unique=True)
   cred_type = models.CharField(max_length=50)
   cred_ssh_user_name = models.CharField(default=' ', max_length=100)
   cred_ssh_password = models.CharField(default=' ', max_length=100)
@@ -65,6 +65,10 @@ class Incidents(models.Model):
   incident_fix_comments = models.CharField(max_length=1000, default='')
   #incident_output_fields = models.CharField(max_length=1000, default='')
   #incident_output_fields_new = models.JSONField(default=dict)
+
+  ## agent like falco, nessus
+  incident_report_agent = models.CharField(max_length=50, default='')
+
 
   def __str__(self):
     return f"{ self.incident_time} - {self.incident_output}"

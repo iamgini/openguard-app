@@ -62,7 +62,10 @@
               <tr>
                 <td>{{ incident.incident_time }}</td>
                 <td>{{ incident.incident_hostname }}</td>
-                <td>{{ incident.incident_rule }}</td>
+                <td>{{ incident.incident_rule }}
+                  <span class="text-muted">{{ incident.incident_report_agent }}</span>
+                    
+                          </td>
                 <td>{{ incident.incident_priority }}</td>
                 <td>{{ incident.incident_output }}</td>
                 <td>{{ incident.incident_status }}</td>

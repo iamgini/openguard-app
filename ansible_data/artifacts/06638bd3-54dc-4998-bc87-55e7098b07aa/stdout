@@ -1,0 +1,9 @@
+
+PLAY [Fedora-35-CP] ************************************************************
+
+TASK [Change /tmp permission] **************************************************
+[0;33mchanged: [Fedora-35-CP][0m
+
+PLAY RECAP *********************************************************************
+[0;33mFedora-35-CP[0m               : [0;32mok=1   [0m [0;33mchanged=1   [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

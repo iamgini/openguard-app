@@ -5,6 +5,9 @@ https://falco.org/docs/alerts/
 ## Installing Falco
 https://falco.org/docs/getting-started/installation/
 
+
+### Ubuntu
+
 ```shell
 ## Trust the falcosecurity GPG key, configure the apt repository, and update the package list:
 curl -s https://falco.org/repo/falcosecurity-3672BA8F.asc | apt-key add -
@@ -16,7 +19,21 @@ apt-get -y install linux-headers-$(uname -r)
 
 ##Install Falco:
 apt-get install -y falco
+```
 
+### Fedora/RHEL/CentOS
+
+```shell
+rpm --import https://falco.org/repo/falcosecurity-3672BA8F.asc
+curl -s -o /etc/yum.repos.d/falcosecurity.repo https://falco.org/repo/falcosecurity-rpm.repo
+
+yum -y install kernel-devel-$(uname -r)
+yum -y install falco
+```
+
+## Start Falco service
+
+```shell
 ## start falco
 systemctl start falco
 systemctl status falco
@@ -25,7 +42,8 @@ systemctl status falco
 ## Uninstall Falco
 
 ```shell
-apt-get remove falco
+apt-get remove falco      # debian
+yum erase falco           # fedora
 ```
 
 
@@ -33,10 +51,10 @@ apt-get remove falco
 
 https://falco.org/docs/rules/
 https://securityhub.dev/falco-rules/file-integrity-monitoring
+https://securityhub.dev/
 
-
-- /etc/falco/falco_rules.yaml - default rule
-- /etc/falco/falco_rules.local.yaml - local rule
+- `/etc/falco/falco_rules.yaml` - default rule
+- `/etc/falco/falco_rules.local.yaml` - local rule
 
 ```yaml
 ## /etc/falco/falco_rules.local.yaml
@@ -98,9 +116,8 @@ ExecStart=/usr/bin/falco -T openguarddemo --pidfile=/var/run/falco.pid
 ## configure http_output to openguard api
 http_output:
   enabled: True
-  url: http://192.168.56.1:8000/app/api/incident_report/
+  url: http://192.168.56.1:8000/api/incident_report/?source_hostname=Ubuntu-20-CP
   user_agent: "falcosecurity/falco"
-
 ## configure json_output
 # Whether to output events in json or text
 json_output: true
@@ -116,3 +133,13 @@ json_output: true
 
 
  https://sysdig.com/blog/fascinating-world-linux-system-calls/
+
+
+## Deplying rules to new hosts
+
+Automated deployment using Ansible. (using role `deploy-falco-rules`)
+
+```shell
+$ cd ansible_data/project
+$ ansible-playbook deploy-falco-rules.yaml -e "NODES=nodes" -i hosts/deployments
+```

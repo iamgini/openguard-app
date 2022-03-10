@@ -22,7 +22,8 @@ class IncidentsSerializer(serializers.HyperlinkedModelSerializer):
                   'incident_time', 
                   'incident_priority',
                   'incident_rule',
-                  'incident_output')
+                  'incident_output',
+                  'incident_report_agent')
 
 ## incident serializer for falco
 #class IncidentsSerializerNew(serializers.HyperlinkedModelSerializer):
