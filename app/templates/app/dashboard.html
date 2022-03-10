@@ -1,5 +1,6 @@
 <!-- templates/home.html -->
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Home{% endblock %}
 
@@ -12,39 +13,42 @@
 {% block content %}
 {% if user.is_authenticated %}
 
+
       <!--first raw with single card-->
-      <!--
+      
         <div class="card shadow-sm">
-          <h5 class="card-header">Customers</h5>
+          <h5 class="card-header">Incidents</h5>
           <div class="card-body">
-            <h5 class="card-title">345k</h5>
-            <p class="card-text">Feb 1 - Apr 1, United States</p>
-            <p class="card-text text-success">18.2% increase since last month</p>
+            <div id="chart_incidents"></div>
+            <p class="card-text">Last  {{ dashboard_data.incident_duration }} Days</p>
           </div>
         </div>
-      -->
-
+    
       <!--end of first raw with single card-->
+
+      <!-- row with 2 cards-->
+      <!--
       <div class="row my-4">
         <div class="row"> 
           <div class="col-12 col-sm-6 col-md-6 mb-4 mb-lg-0">
             <div class="card shadow-sm">
               <h5 class="card-header">Incidents</h5>
-              <div class="card-body">
-                  <div id="chart_incidents"></div>
-              </div>
+              {{ dashboard_data.incident_list_graph_items_fixed }}
             </div>
           </div>
           <div class="col-12 col-sm-6 col-md-6 mb-4 mb-lg-0">
             <div class="card shadow-sm">
               <h5 class="card-header">Status</h5>
               <div class="card-body">
-                  <div id="chart_incidents_status"></div>
+                  
               </div>
           </div> 
        </div> 
       </div>
-      <!--second raw with 4 card-->
+      -->
+      <!-- end of row with 2 cards-->
+
+      <!-- raw with 4 card-->
       <div class="row my-4">
         <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
             <div class="card shadow-sm">
@@ -87,7 +91,10 @@
               </div>
         </div>
       </div>
-      <!--end of second raw with 4 cards-->
+      <!--end of raw with 4 cards-->
+
+      <!-- row with 3 cards-->
+      <!--
       <div class="row my-3">
 
         <div class="col-sm-6 col-md-4">
@@ -102,31 +109,34 @@
         </div>
       
       
-      <div class="col-sm-6 col-md-4">
-        <div class="card border-white">
-          <div class="card-header">Heading 2</div>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build
-              on the card
-              title and make up the bulk of the card's content.</p>
+        <div class="col-sm-6 col-md-4">
+          <div class="card border-white">
+            <div class="card-header">Heading 2</div>
+            <div class="card-body">
+              <p class="card-text">Some quick example text to build
+                on the card
+                title and make up the bulk of the card's content.</p>
+            </div>
           </div>
         </div>
-      </div>
       
       
-      <div class="col-sm-6 col-md-4">
-        <div class="card border-white">
-          <div class="card-header">Heading 3</div>
-          <div class="card-body">
-            <p class="card-text">Some quick example text to build
-              on the card
-              title and make up the bulk of the card's content.</p>
+        <div class="col-sm-6 col-md-4">
+          <div class="card border-white">
+            <div class="card-header">Heading 3</div>
+            <div class="card-body">
+              <p class="card-text">Some quick example text to build
+                on the card
+                title and make up the bulk of the card's content.</p>
+            </div>
           </div>
         </div>
-      </div>
       
       </div>
-      <!--3rd raw with 2 card-->
+      -->
+      <!-- end of row with 3 cards-->
+
+      <!--raw with 2 card 65:35-->
       <!-- some more widget-->
       <div class="row">
         <div class="col-12 col-xl-8 mb-4 mb-lg-0">
@@ -134,100 +144,54 @@
                 <h5 class="card-header">Latest Incidents</h5>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                              <tr>
-                                <th scope="col">Order</th>
-                                <th scope="col">Product</th>
-                                <th scope="col">Customer</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Date</th>
-                                <th scope="col"></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th scope="row">17371705</th>
-                                <td>Volt Premium Bootstrap 5 Dashboard</td>
-                                <td>johndoe@gmail.com</td>
-                                <td>€61.11</td>
-                                <td>Aug 31 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                              </tr>
-                              <tr>
-                                <th scope="row">17370540</th>
-                                <td>Pixel Pro Premium Bootstrap UI Kit</td>
-                                <td>jacob.monroe@company.com</td>
-                                <td>$153.11</td>
-                                <td>Aug 28 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                              </tr>
-                              <tr>
-                                <th scope="row">17371705</th>
-                                <td>Volt Premium Bootstrap 5 Dashboard</td>
-                                <td>johndoe@gmail.com</td>
-                                <td>€61.11</td>
-                                <td>Aug 31 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                              </tr>
-                              <tr>
-                                <th scope="row">17370540</th>
-                                <td>Pixel Pro Premium Bootstrap UI Kit</td>
-                                <td>jacob.monroe@company.com</td>
-                                <td>$153.11</td>
-                                <td>Aug 28 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                              </tr>
-                              <tr>
-                                <th scope="row">17371705</th>
-                                <td>Volt Premium Bootstrap 5 Dashboard</td>
-                                <td>johndoe@gmail.com</td>
-                                <td>€61.11</td>
-                                <td>Aug 31 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                              </tr>
-                              <tr>
-                                <th scope="row">17370540</th>
-                                <td>Pixel Pro Premium Bootstrap UI Kit</td>
-                                <td>jacob.monroe@company.com</td>
-                                <td>$153.11</td>
-                                <td>Aug 28 2020</td>
-                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                              </tr>
-                            </tbody>
-                          </table>
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Incident Time</th>
+                            <th scope="col">Hostname</th>
+                            <th scope="col">Rule</th>
+                            <th scope="col">Priority</th>
+                            <th scope="col">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for incident in dashboard_data.latest_incidents %}
+                          <tr>
+                            <td>{{ incident.incident_time }}</td>
+                            <td>{{ incident.incident_hostname }}</td>
+                            <td>{{ incident.incident_rule }}</td>
+                            <td>{{ incident.incident_priority }}</td>                            
+                            <td>{{ incident.incident_status }}</td>
+                          </tr>
+                          {% endfor %}
+                          
+                        </tbody>
+                      </table>
+                        
                     </div>
-                      <a href="#" class="btn btn-block btn-light">View all</a>
+                      <a href="{% url 'app:incident_view' %}" class="btn btn-primary">View all</a>
                 </div>
             </div>
         </div>
         <div class="col-12 col-xl-4">
           <div class="card shadow-sm">
-            <h5 class="card-header">Traffic last 6 months</h5>
+            <h5 class="card-header">Incident Status</h5>
             <div class="card-body">
-                <div id="traffic-chart"></div>
-                
+              <div id="chart_incidents_status"></div>
+              <p class="card-text">Last  {{ dashboard_data.incident_duration }} Days</p>
             </div>
           </div>
         </div>
       </div>
+      <!--end of raw with 2 card 65:35-->
 
-    <script>
-      new Chartist.Line('#traffic-chart', {
-        labels: ['January', 'Februrary', 'March', 'April', 'May', 'June'],
-        series: [
-          [23000, 25000, 19000, 34000, 56000, 64000]
-        ]
-      }, {
-      low: 0,
-      showArea: true
-    });
-    </script>    
+    
     <script>
     new Chartist.Line('#chart_incidents', {
       labels: {{ dashboard_data.incident_list_graph_label | safe }},
       series: [
         {{ dashboard_data.incident_list_graph_items_1 | safe }},
+        //{{ dashboard_data.incident_list_graph_items_fixed | safe }},
       ]
     }, {
       fullWidth: true,
@@ -238,16 +202,19 @@
 
     //incident fix vs pending
     new Chartist.Pie('#chart_incidents_status', {
-      series: [20, 10, 30, 40]
+      labels: {{ dashboard_data.incident_status_graph_label | safe }},
+      series: {{ dashboard_data.incident_status_graph_item | safe }},
     }, {
       donut: true,
-      donutWidth: 60,
-      donutSolid: true,
-      startAngle: 270,
-      showLabel: true
+      donutWidth: 50,
+      donutSolid: false,
+      startAngle: 0,
+      showLabel: true,
+      labelOffset: 40,
+      labelDirection: 'explode',
     });
     
-  </script>    
+  </script>
 
 {% endif %}
 {% endblock %}

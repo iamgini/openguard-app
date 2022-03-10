@@ -77,23 +77,42 @@ def incident_demo(request):
 ## dashboard with event logs
 @login_required
 def dashboard_view(request):
-
     ## declare empty lists
     incident_list_graph_label = []
     incident_list_graph_items_1 = []
+    incident_list_graph_items_fixed = []
+
+    incident_status_graph_label = []
+    incident_status_graph_item = []
     # get the page ID
-    incident_duration = request.GET.get('duration', 7)
+    incident_duration = request.GET.get('duration', 30)
+
     for duration in range(incident_duration,0,-1):
         this_date_difference = (datetime.datetime.now(timezone.utc) - datetime.timedelta(days=duration)).strftime('%Y-%m-%d')
+        this_date_difference_label = (datetime.datetime.now(timezone.utc) - datetime.timedelta(days=duration)).strftime('%m/%d')
         #this_date = 
         inc_data = models.Incidents.objects.filter(incident_time__contains=this_date_difference).count()
-        incident_list_graph_label.append(this_date_difference)
+        #inc_data_fixed = models.Incidents.objects.filter(incident_time__contains=this_date_difference, incident_status='FIXED').count()
+        
+        incident_list_graph_label.append(this_date_difference_label)
         incident_list_graph_items_1.append(inc_data)
+        #incident_list_graph_items_fixed.append(inc_data)
 
     #dweek = now().today() - timedelta(days=7)
 
     #incident_list_graph_label = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Noday']
     #incident_list_graph_items_1 = [2, 7, 4, 7, 3]
+
+    this_date_difference = (datetime.datetime.now(timezone.utc) - datetime.timedelta(days=incident_duration)).strftime('%Y-%m-%d')
+    latest_incidents = models.Incidents.objects.all().filter(incident_time__gte=this_date_difference).order_by('-incident_time')[0:5]
+
+    incident_status_list = ["FIXED", "PENDING", "NO_RULE_FOUND"]
+    for istatus in incident_status_list:
+        incident_status_graph_label.append(istatus)
+        incidents_status_count = models.Incidents.objects.all().filter(incident_time__gte=this_date_difference, incident_status=istatus).count()
+        incident_status_graph_item.append(incidents_status_count)
+    #incidents_fixed = models.Incidents.objects.all().filter(incident_time__gte=this_date_difference, incident_status='FIXED')
+    #incidents_pending = models.Incidents.objects.all().filter(incident_time__gte=this_date_difference, incident_status='FIXED')
 
     all_incidents = models.Incidents.objects.all()
     all_incidents_count = all_incidents.count()
@@ -108,12 +127,17 @@ def dashboard_view(request):
     all_rules_count = all_rules.count()
 
     context = {'dashboard_data': {
+                  'latest_incidents': latest_incidents,
                   'all_incidents_count': all_incidents_count,
+                  'incident_duration': incident_duration,
                   'all_managednodes_count': all_managednodes_count,
                   'all_credentials_count': all_credentials_count,
                   'all_rules_count': all_rules_count,
                   'incident_list_graph_label': json.dumps(incident_list_graph_label),
                   'incident_list_graph_items_1': json.dumps(incident_list_graph_items_1),
+                  'incident_status_graph_label': json.dumps(incident_status_graph_label),
+                  'incident_status_graph_item': json.dumps(incident_status_graph_item),
+                  #'incident_list_graph_items_fixed': json.dumps(incident_list_graph_items_fixed),
                   }
               }
     return render(request,'app/dashboard.html',context=context) 

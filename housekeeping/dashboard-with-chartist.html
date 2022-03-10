@@ -1,0 +1,292 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{%block content_header%}  
+{% if user.is_authenticated %}
+<h1 class="h2">Dashboard</h1>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+      <!--first raw with single card-->
+      <!--
+        <div class="card shadow-sm">
+          <h5 class="card-header">Customers</h5>
+          <div class="card-body">
+            <h5 class="card-title">345k</h5>
+            <p class="card-text">Feb 1 - Apr 1, United States</p>
+            <p class="card-text text-success">18.2% increase since last month</p>
+          </div>
+        </div>
+      -->
+
+      <!--end of first raw with single card-->
+      <div class="row my-4">
+        <div class="row"> 
+          <div class="col-12 col-sm-6 col-md-6 mb-4 mb-lg-0">
+            <div class="card shadow-sm">
+              <h5 class="card-header">Incidents</h5>
+              <div class="card-body">
+                  <div id="chart_incidents"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 mb-4 mb-lg-0">
+            <div class="card shadow-sm">
+              <h5 class="card-header">Status</h5>
+              <div class="card-body">
+                  <div id="chart_incidents_status"></div>
+
+                  <div>
+                    <canvas id="myChart"></canvas>
+                  </div>
+              </div>
+          </div> 
+       </div> 
+      </div>
+      <!--second raw with 4 card-->
+      <div class="row my-4">
+        <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <div class="card shadow-sm">
+                <h5 class="card-header">Incidents</h5>
+                <div class="card-body">
+                  <h1 class="card-title">{{ dashboard_data.all_incidents_count }}</h5>
+                  <!--<p class="card-text">Feb 1 - Apr 1, United States</p>
+                  <p class="card-text text-success">18.2% increase since last month</p>-->
+                </div>
+              </div>
+        </div>
+        <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+            <div class="card shadow-sm">
+                <h5 class="card-header">Managed Nodes</h5>
+                <div class="card-body">
+                  <h1 class="card-title">{{ dashboard_data.all_managednodes_count }}</h5>
+                  <!--<p class="card-text">Feb 1 - Apr 1, United States</p>
+                  <p class="card-text text-success">4.6% increase since last month</p>-->
+                </div>
+              </div>
+        </div>
+        <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+            <div class="card shadow-sm">
+                <h5 class="card-header">Credentials</h5>
+                <div class="card-body">
+                  <h1 class="card-title">{{ dashboard_data.all_credentials_count }}</h5>
+                    <!--<p class="card-text">Feb 1 - Apr 1, United States</p>
+                    <p class="card-text text-success">4.6% increase since last month</p>-->
+                </div>
+              </div>
+        </div>
+        <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+            <div class="card shadow-sm">
+                <h5 class="card-header">Rules</h5>
+                <div class="card-body">
+                  <h1 class="card-title">{{ dashboard_data.all_rules_count }}</h5>
+                    <!--<p class="card-text">Feb 1 - Apr 1, United States</p>
+                    <p class="card-text text-success">4.6% increase since last month</p>-->
+                </div>
+              </div>
+        </div>
+      </div>
+      <!--end of second raw with 4 cards-->
+      <div class="row my-3">
+
+        <div class="col-sm-6 col-md-4">
+          <div class="card border-white">
+            <div class="card-header">Heading 1</div>
+            <div class="card-body">
+              <p class="card-text">Some quick example text to build
+                on the card
+                title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+      
+      
+      <div class="col-sm-6 col-md-4">
+        <div class="card border-white">
+          <div class="card-header">Heading 2</div>
+          <div class="card-body">
+            <p class="card-text">Some quick example text to build
+              on the card
+              title and make up the bulk of the card's content.</p>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="col-sm-6 col-md-4">
+        <div class="card border-white">
+          <div class="card-header">Heading 3</div>
+          <div class="card-body">
+            <p class="card-text">Some quick example text to build
+              on the card
+              title and make up the bulk of the card's content.</p>
+          </div>
+        </div>
+      </div>
+      
+      </div>
+      <!--3rd raw with 2 card-->
+      <!-- some more widget-->
+      <div class="row">
+        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+            <div class="card shadow-sm">
+                <h5 class="card-header">Latest Incidents</h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Order</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Customer</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Date</th>
+                                <th scope="col"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row">17371705</th>
+                                <td>Volt Premium Bootstrap 5 Dashboard</td>
+                                <td>johndoe@gmail.com</td>
+                                <td>€61.11</td>
+                                <td>Aug 31 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">17370540</th>
+                                <td>Pixel Pro Premium Bootstrap UI Kit</td>
+                                <td>jacob.monroe@company.com</td>
+                                <td>$153.11</td>
+                                <td>Aug 28 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">17371705</th>
+                                <td>Volt Premium Bootstrap 5 Dashboard</td>
+                                <td>johndoe@gmail.com</td>
+                                <td>€61.11</td>
+                                <td>Aug 31 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">17370540</th>
+                                <td>Pixel Pro Premium Bootstrap UI Kit</td>
+                                <td>jacob.monroe@company.com</td>
+                                <td>$153.11</td>
+                                <td>Aug 28 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">17371705</th>
+                                <td>Volt Premium Bootstrap 5 Dashboard</td>
+                                <td>johndoe@gmail.com</td>
+                                <td>€61.11</td>
+                                <td>Aug 31 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">17370540</th>
+                                <td>Pixel Pro Premium Bootstrap UI Kit</td>
+                                <td>jacob.monroe@company.com</td>
+                                <td>$153.11</td>
+                                <td>Aug 28 2020</td>
+                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                      <a href="#" class="btn btn-block btn-light">View all</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-4">
+          <div class="card shadow-sm">
+            <h5 class="card-header">Traffic last 6 months</h5>
+            <div class="card-body">
+                <div id="traffic-chart"></div>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <script>
+      new Chartist.Line('#traffic-chart', {
+        labels: ['January', 'Februrary', 'March', 'April', 'May', 'June'],
+        series: [
+          [23000, 25000, 19000, 34000, 56000, 64000]
+        ]
+      }, {
+      low: 0,
+      showArea: true
+    });
+    </script>    
+    <script>
+    new Chartist.Line('#chart_incidents', {
+      labels: {{ dashboard_data.incident_list_graph_label | safe }},
+      series: [
+        {{ dashboard_data.incident_list_graph_items_1 | safe }},
+      ]
+    }, {
+      fullWidth: true,
+      chartPadding: {
+        right: 40
+      }
+    });
+
+    //incident fix vs pending
+    new Chartist.Pie('#chart_incidents_status', {
+      series: [20, 10, 30, 40]
+    }, {
+      donut: true,
+      donutWidth: 60,
+      donutSolid: true,
+      startAngle: 270,
+      showLabel: true
+    });
+    
+  </script>
+  <script src="{% static 'dashboard.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const labels = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+    ];
+  
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'My First dataset',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: [0, 10, 5, 2, 20, 30, 45],
+      }]
+    };
+  
+    const config = {
+      type: 'line',
+      data: data,
+      options: {}
+    };
+  </script>
+  <script>
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+  </script>
+
+{% endif %}
+{% endblock %}
