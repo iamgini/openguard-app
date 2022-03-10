@@ -1,1 +1,0 @@
-{"event": "verbose", "uuid": "4fa45879-886f-4578-bce2-158ba46c83e1", "counter": 5, "stdout": "\u001b[1;35m[WARNING]: Platform darwin on host localhost is using the discovered Python\u001b[0m", "start_line": 4, "end_line": 5, "runner_ident": "eb8ef086-da59-4378-9caa-94c79b7ab2e9", "created": "2022-03-05T02:36:00.256253"}

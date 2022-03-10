@@ -1,9 +1,0 @@
-
-PLAY [Ubuntu-20-CP] ************************************************************
-
-TASK [Change /tmp permission] **************************************************
-[1;31mfatal: [Ubuntu-20-CP]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: Could not resolve hostname 5_latestssh: nodename nor servname provided, or not known", "unreachable": true}[0m
-
-PLAY RECAP *********************************************************************
-[0;31mUbuntu-20-CP[0m               : ok=0    changed=0    [1;31munreachable=1   [0m failed=0    skipped=0    rescued=0    ignored=0   
-

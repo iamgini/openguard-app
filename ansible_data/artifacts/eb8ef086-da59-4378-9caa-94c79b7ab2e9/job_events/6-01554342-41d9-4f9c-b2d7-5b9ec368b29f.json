@@ -1,1 +1,0 @@
-{"event": "verbose", "uuid": "01554342-41d9-4f9c-b2d7-5b9ec368b29f", "counter": 6, "stdout": "\u001b[1;35minterpreter at /Users/gini/python-venv/django/bin/python3.9, but future\u001b[0m", "start_line": 5, "end_line": 6, "runner_ident": "eb8ef086-da59-4378-9caa-94c79b7ab2e9", "created": "2022-03-05T02:36:00.256253"}

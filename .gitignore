@@ -12,3 +12,6 @@ media
 
 ## log files from app
 application_logs
+
+## ansible
+ansible_data/artifacts/
