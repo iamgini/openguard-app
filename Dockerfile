@@ -15,3 +15,8 @@ WORKDIR /code/
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . .
+
+EXPOSE 8000
+
+#CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "openguard.wsgi.application"]
+CMD ["python", "-u", "manage.py", "runserver"]
