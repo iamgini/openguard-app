@@ -15,3 +15,7 @@ application_logs
 
 ## ansible
 ansible_data/artifacts/
+
+
+## .env
+.env*

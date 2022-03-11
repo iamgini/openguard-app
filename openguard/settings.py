@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 import logging
 
+import json
+import logging.config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,13 +31,15 @@ SECRET_KEY = 'django-insecure-ibc2wkz@&a)k8-kbs74azoa5zxwd2!e4@$13f7&gv3g3rhz5rn
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
-DEBUG = True # int(os.environ.get("DEBUG", default=0))
-
+#DEBUG = True # int(os.environ.get("DEBUG", default=0))
+DEBUG = os.getenv('DEBUG', False)
+LOGLEVEL = os.getenv('DJANGO_LOGLEVEL', 'info').upper()
 
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
 # For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
 #ALLOWED_HOSTS = []
 #ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+#ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1','[::1]','192.168.56.1']
 ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1','[::1]','192.168.56.1']
 
 
@@ -108,11 +113,16 @@ WSGI_APPLICATION = 'openguard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'openguarddb',
-        'USER': 'postgresadmin',
-        'PASSWORD': 'admin123',
-        'HOST': '192.168.64.10',
-        'PORT': '32003',
+        #'NAME': 'openguarddb',
+        'NAME': os.getenv('DATABASE_NAME', 'openguarddb'),
+        #'USER': 'postgresadmin',
+        'USER': os.getenv('DATABASE_USERNAME', 'dbadmin'),
+        #'PASSWORD': 'admin123',
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'password'),
+        #'HOST': '192.168.64.10',
+        'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
+        #'PORT': '32003',
+        'PORT': os.getenv('DATABASE_PORT', 5432),
         #'HOST': 'localhost',
         #'PORT': '5432',
     }
