@@ -55,7 +55,7 @@ ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1').split(',')
 ## Gineesh: 6. added 'django_crontab',
 
 INSTALLED_APPS = [
-    'django_crontab',
+    #'django_crontab',
     'api.apps.ApiConfig',
     'app.apps.AppConfig',
     'django.contrib.admin',
