@@ -19,4 +19,5 @@ COPY . .
 EXPOSE 8000
 
 #CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "openguard.wsgi.application"]
-CMD ["python", "-u", "manage.py", "runserver"]
+CMD ["gunicorn", "--bind", ":8000", "mysite.wsgi"]
+#CMD ["python", "-u", "manage.py", "runserver"]
