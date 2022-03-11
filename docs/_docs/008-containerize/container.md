@@ -30,3 +30,7 @@ https://www.digitalocean.com/community/tutorials/how-to-deploy-a-scalable-and-se
 
 https://github.com/do-community/django-polls/blob/polls-docker/django-polls/mysite/settings.py
 
+- ENV in openguard-config repo
+
+- ref: https://github.com/do-community/django-polls/blob/polls-docker/django-polls/mysite/settings.py
+- https://www.digitalocean.com/community/tutorials/how-to-deploy-a-scalable-and-secure-django-application-with-kubernetes
