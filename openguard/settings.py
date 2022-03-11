@@ -82,6 +82,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'openguard.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
