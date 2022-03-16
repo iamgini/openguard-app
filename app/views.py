@@ -387,7 +387,7 @@ def incident_fix(request):
                     #print(incident.incident_rule)
 
                     this_incident_id = incident.id
-                    print(this_incident_id)
+                    #print(this_incident_id)
                     this_hostname = incident.incident_hostname
                     rule_detected = incident.incident_rule
                     #return Response(rule_detected)
@@ -399,15 +399,36 @@ def incident_fix(request):
 
                         try:
                             rule_list = models.Rules.objects.all().filter(rule_name = rule_detected).order_by       ('rule_name').first()
-                            rule_fix_playbook = getattr(rule_list,'rule_fix_playbook')
-                            job_data = { "incident_id": this_incident_id,
-                                            "managed_node": node_name, 
-                                            "node_connection_name": node_connection_name,
-                                            "node_connection_method": node_connection_method,
-                                            "rule_fix_playbook": rule_fix_playbook,
-                                            "pending_incidents": "YES"
-                                          }
-                            return Response(job_data)
+                            #print(len(rule_list))
+                            if type(rule_list) != type(None):
+                                #print("No rules !!!")
+                                #pass
+                                #if len(rule_list) > 0:
+                                rule_fix_playbook = getattr(rule_list,'rule_fix_playbook')
+                                job_data = { "incident_id": this_incident_id,
+                                                "managed_node": node_name, 
+                                                "node_connection_name": node_connection_name,
+                                                "node_connection_method": node_connection_method,
+                                                "rule_fix_playbook": rule_fix_playbook,
+                                                "pending_incidents": "YES"
+                                              }
+                                return Response(job_data)
+                                #else:
+                                #    print("No Rules")
+                            elif type(rule_list) == type(None):
+                                ####### if no matching rules, then update incident  #####
+                                incident.incident_status = "NO RULES FOUND"
+                                incident.incident_fix_comments = "Unable to find any matching rule to remediate"
+                                incident.save()
+
+                                job_data = { "incident_id": this_incident_id,
+                                          "managed_node":"NA",
+                                          "node_connection_name": "NA",
+                                          "node_connection_method": "NA",
+                                          "rule_fix_playbook": "NA",
+                                          "pending_incidents": "NO"
+                                                  }
+                                return Response(job_data)
 
                         except Exception as ansible_exception:
                             #print(ansible_exception)
