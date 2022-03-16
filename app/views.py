@@ -4,7 +4,6 @@ from django.urls import reverse, reverse_lazy
 from .import models 
 from django.http import HttpResponse
 from django.http.response import Http404, HttpResponse, HttpResponseNotFound, JsonResponse
-from rest_framework.parsers import JSONParser 
 
 ## Import forms
 from .forms import ManagedNodeForm, CredentialForm, RuleForm
@@ -19,6 +18,14 @@ from .cron import my_cron_job
 from rest_framework import viewsets, status
 from .serializers import ManagedNodesSerializer, IncidentsSerializer, IncidentsSerializerNew
 from .models import ManagedNodes, Incidents, Credentials, Rules
+
+from rest_framework.parsers import JSONParser 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+## REST API Token
+#from rest_framework.permissions import IsAuthenticated
+## https://simpleisbetterthancomplex.com/tutorial/2018/11/22/how-to-implement-token-authentication-using-django-rest-framework.html
 
 ## Refer to https://www.bezkoder.com/django-rest-api
 from rest_framework.decorators import api_view
@@ -42,7 +49,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 ## date
 import time
 import datetime
+from datetime import datetime 
 from datetime import date,timedelta
+#from datetime import datetime,date,timedelta
 from django.utils import timezone
 
 # Create your views here.
@@ -96,8 +105,8 @@ def dashboard_view(request):
     # get the page ID
     incident_duration = request.GET.get('duration', 30)
 
-    for duration in range(incident_duration,0,-1):
-        this_date_difference = (datetime.datetime.now(timezone.utc) - datetime.timedelta(days=duration)).strftime('%Y-%m-%d')
+    for duration in range(incident_duration,-1,-1):
+        this_date_difference = (datetime.datetime.now(timezone.utc) - datetime.timedelta( days=duration )).strftime('%Y-%m-%d')
         this_date_difference_label = (datetime.datetime.now(timezone.utc) - datetime.timedelta(days=duration)).strftime('%m/%d')
         #this_date = 
         inc_data = models.Incidents.objects.filter(incident_time__contains=this_date_difference).count()
@@ -320,6 +329,9 @@ def nodes_list(request):
   
 @api_view(['GET', 'POST', 'DELETE'])
 def incident_report(request):
+
+    #permission_classes = (IsAuthenticated) 
+
     #if request.method == 'GET':
     #    managenodes = ManagedNodes.objects.all()
     #    
@@ -344,6 +356,7 @@ def incident_report(request):
         #new_log.write('\n' + my_incident_hostname + json.dumps( incident_data ))
         #new_log.close()
         if '.ansible/tmp/ansible-tmp' in incident_data['output']:
+            #pass
             if incident_serializer.is_valid():
                 #incident_serializer.save    (incident_hostname=my_incident_hostname)
                 return JsonResponse(incident_serializer.data,   status=status.HTTP_204_NO_CONTENT) 
@@ -351,8 +364,100 @@ def incident_report(request):
             #return incident_data
         else:
             if incident_serializer.is_valid():
-                incident_serializer.save    (incident_hostname=my_incident_hostname, incident_report_agent=this_incident_report_agent)
-                return JsonResponse(incident_serializer.data,   status=status.HTTP_201_CREATED) 
-            return JsonResponse(incident_serializer.errors,     status=status.HTTP_400_BAD_REQUEST)
+                incident_serializer.save(incident_hostname=my_incident_hostname, incident_report_agent=this_incident_report_agent)
+                #print(incident_serializer.data)
+                return JsonResponse(incident_serializer.data, status=status.HTTP_201_CREATED) 
+            return JsonResponse(incident_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             #return incident_data
-        
+
+@api_view(['GET', 'POST'])
+def incident_fix(request):
+
+    #permission_classes = (IsAuthenticated) 
+
+    if request.method == 'GET':
+        dateTimeObj = datetime.now()
+        timestampStr = str(dateTimeObj.strftime("%Y-%b-%d-%H:%M:%S"))
+        #all_incidents = models.Incidents.objects.all().filter(incident_status='PENDING').order_by('incident_time').first()
+        all_incidents = models.Incidents.objects.all().filter(incident_status='PENDING').order_by('incident_time')[0:1]
+        #print(len(all_incidents))
+        if len(all_incidents) > 0:
+            try:
+                for incident in all_incidents.iterator():
+                    #print(incident.incident_rule)
+
+                    this_incident_id = incident.id
+                    print(this_incident_id)
+                    this_hostname = incident.incident_hostname
+                    rule_detected = incident.incident_rule
+                    #return Response(rule_detected)
+                    managed_node = models.ManagedNodes.objects.all().filter(instance_name=this_hostname).order_by       ('instance_name').first()
+                    if managed_node != None:
+                        node_name = getattr(managed_node,'instance_name')
+                        node_connection_name = getattr(managed_node,'instance_name_connection')
+                        node_connection_method = getattr(managed_node,'instance_credential')
+
+                        try:
+                            rule_list = models.Rules.objects.all().filter(rule_name = rule_detected).order_by       ('rule_name').first()
+                            rule_fix_playbook = getattr(rule_list,'rule_fix_playbook')
+                            job_data = { "incident_id": this_incident_id,
+                                            "managed_node": node_name, 
+                                            "node_connection_name": node_connection_name,
+                                            "node_connection_method": node_connection_method,
+                                            "rule_fix_playbook": rule_fix_playbook,
+                                            "pending_incidents": "YES"
+                                          }
+                            return Response(job_data)
+
+                        except Exception as ansible_exception:
+                            #print(ansible_exception)
+                            print("No rules found: " + str(ansible_exception)  )
+                            job_data = { "incident_id": "NA",
+                                          "managed_node":"NA",
+                                          "node_connection_name": "NA",
+                                          "node_connection_method": "NA",
+                                          "rule_fix_playbook": "NA",
+                                          "pending_incidents": "NO"
+                                        }
+                            return Response(job_data)
+            except Exception as incident_exception:
+                job_data = { "incident_id": "NA",
+                          "managed_node":"NA",
+                          "node_connection_name": "NA",
+                          "node_connection_method": "NA",
+                          "rule_fix_playbook": "NA",
+                          "pending_incidents": "NO"
+                        }
+                return Response(job_data)              
+        else:
+            job_data = { "incident_id": "NA",
+                          "managed_node":"NA",
+                          "node_connection_name": "NA",
+                          "node_connection_method": "NA",
+                          "rule_fix_playbook": "NA",
+                          "pending_incidents": "NO"
+                        }
+            return Response(job_data)
+            
+    elif request.method == 'POST':
+        message = {"incident_status": "Updating"}
+        try:
+            incident_fix_data = JSONParser().parse(request)
+            print(incident_fix_data['incident_id'])
+            this_incident_id = incident_fix_data['incident_id']
+            this_incident = models.Incidents.objects.all().filter(id=this_incident_id)
+            for incident in this_incident.iterator():
+                try:
+                    incident.incident_status = incident_fix_data['incident_status']
+                    incident.incident_time_fixed = incident_fix_data['incident_time_fixed']
+                    incident.incident_fix_comments = incident_fix_data['incident_fix_comments']
+                    incident.save()
+                    message = {"incident_status": "Updated"}
+                    return JsonResponse(message, status=status.HTTP_202_ACCEPTED)
+                except Exception as incident_save_exception:
+                    print("Error: " + str(incident_save_exception))
+                    return Response("Unable to save record; something went wrong !")
+            
+        except Exception as job_fix_exception:
+            print("Error: " + str(job_fix_exception))
+            return Response("Something went wrong !")

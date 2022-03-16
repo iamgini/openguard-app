@@ -70,5 +70,8 @@ urlpatterns = [
   #path('api/incident_report/<str:hostname>/', views.incident_report,name='incident_report_api'),
   #<str:topic>/
 
+  ## incident fix api from runner
+  path('api/incident_fix/', views.incident_fix,name='incident_fix_api'),
+
   #url(r'^api/tutorials$', views.tutorial_list),
 ]

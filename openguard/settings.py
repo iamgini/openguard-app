@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    #'rest_framework.authtoken',
     'corsheaders',
     'crispy_forms',
     "crispy_bootstrap5",
@@ -210,3 +211,11 @@ CRONJOBS = [
 #        filename = '/my_log_file.log',
 #        filemode = 'a'
 #    )
+
+#REST_FRAMEWORK = {
+#    'DEFAULT_AUTHENTICATION_CLASSES': (
+#        'rest_framework.authentication.TokenAuthentication',
+#    ),
+#    'DEFAULT_PERMISSION_CLASSES': (
+#        'rest_framework.permissions.IsAuthenticated', )
+#}
