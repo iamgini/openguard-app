@@ -13,7 +13,9 @@ from .views import (ManagedNodeCreateView,
                     CredentialDeleteView,
                     RuleCreateView,
                     RuleUpdateView,
-                    RuleDeleteView
+                    RuleDeleteView,
+                    TokenCreateView,
+                    TokenDeleteView
                     )
 
 router_nodes = routers.DefaultRouter()
@@ -56,7 +58,13 @@ urlpatterns = [
   path('rules/create/',RuleCreateView.as_view(),name='create_rule'),
   path('rules/update/<int:pk>/',RuleUpdateView.as_view(),name='update_rule'),
   path('rules/delete/<int:pk>/',RuleDeleteView.as_view(),name="delete_rule"),
-  
+
+  ## Tokens URLs
+  path('tokens/',views.tokens_view,name='tokens_view'),
+  path('tokens/create/',TokenCreateView.as_view(),name='create_token'),
+  #path('tokens/update/<int:pk>/',RuleUpdateView.as_view(),name='update_rule'),
+  path('tokens/delete/<int:pk>/',TokenDeleteView.as_view(),name="delete_token"),
+
   #path('dashboard/', TemplateView.as_view(template_name='dashboard.html'), name='dashboard_view'),
   #path('home/',views.home_view,name='home_view')
   

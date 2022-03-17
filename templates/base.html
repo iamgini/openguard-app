@@ -102,6 +102,13 @@
               Rules
             </a>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link {% if 'tokens' in request.get_full_path %} active {% endif %}" href="{% url 'app:tokens_view' %}">
+              <span data-feather="lock"></span>
+              Tokens
+            </a>
+          </li>
           
         </ul>
 

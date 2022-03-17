@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Access Tokens{% endblock %}
+
+
+        {%block content_header%}  
+        {% if user.is_authenticated %}
+        <h1 class="h2">Access Tokens</h1>
+        <a class="btn btn-primary" href="{% url 'app:create_token' %}" role="button">Create Token</a>
+        {% endif %}
+        {% endblock %}
+
+      {% block content %}
+      {% if user.is_authenticated %}
+      <div class="row ">
+        <div class="col-12">
+          <div class="card shadow-sm">
+            <h5 class="card-header">Access Tokens</h5>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Token name</th>
+                      <th scope="col">Description</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for token in all_tokens %}
+                    <tr>
+                      <th scope="row">{{ token.token_name }}</td>
+                      <td>{{ token.token_desc }}</td>
+                      <td><a class="btn btn-danger" href="{% url 'app:delete_token' pk=token.id %}" role="button">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+{% endblock %}
+

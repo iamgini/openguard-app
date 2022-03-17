@@ -1,6 +1,9 @@
 <!-- templates/home.html -->
 {% extends 'base.html' %}
 
+<!-- for timezone-->
+{% load tz %}
+
 {% block title %}Incidents{% endblock %}
 
 {%block content_header%}  
@@ -60,16 +63,26 @@
             <tbody>
               {% for incident in incidents %}
               <tr>
-                <td>{{ incident.incident_time }}</td>
+                <td>
+                  {% timezone "Asia/Singapore" %}
+                  {{ incident.incident_time }}
+                  {% endtimezone %}
+                </td>
                 <td>{{ incident.incident_hostname }}</td>
                 <td>{{ incident.incident_rule }}
                   <span class="text-muted">{{ incident.incident_report_agent }}</span>
-                    
-                          </td>
+                  </td>
                 <td>{{ incident.incident_priority }}</td>
                 <td>{{ incident.incident_output }}</td>
                 <td>{{ incident.incident_status }}</td>
-                <td>{{ incident.incident_time_fixed}}: {{ incident.incident_fix_comments}}</td>
+                <td>
+                  {% if incident.incident_status != 'PENDING' %}
+                  {% timezone "Asia/Singapore" %}
+                  {{ incident.incident_time_fixed}}
+                  {% endtimezone %}
+                  : {{ incident.incident_fix_comments}}
+                  {% endif %}
+                </td>
               </tr>
               {% endfor %}
               

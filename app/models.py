@@ -39,13 +39,21 @@ class Rules(models.Model):
   def __str__(self):
     return f"{ self.rule_name}"
 
+## For custom auth tokens
+class Tokens(models.Model):
+  token_name = models.CharField(max_length=50,unique=True)
+  token_desc = models.CharField(max_length=100)
+  token_value = models.CharField(max_length=50,unique=True)
+ 
+  def __str__(self):
+    return f"{ self.token_name}"
 
 class Credentials(models.Model):
   cred_name = models.CharField(max_length=20,unique=True)
   cred_type = models.CharField(max_length=50)
   cred_ssh_user_name = models.CharField(default=' ', max_length=100)
   cred_ssh_password = models.CharField(default=' ', max_length=100)
-  cred_ssh_private_key = models.CharField(default=' ', max_length=5000)
+  cred_ssh_private_key = models.TextField(default=' ', max_length=5000)
 
   def __str__(self):
     return f"{self.cred_name}"

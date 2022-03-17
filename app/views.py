@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.http.response import Http404, HttpResponse, HttpResponseNotFound, JsonResponse
 
 ## Import forms
-from .forms import ManagedNodeForm, CredentialForm, RuleForm
+from .forms import ManagedNodeForm, CredentialForm, RuleForm, TokenForm
 
 ## auto forms and update - class based views (CBV)
 from django.views.generic import TemplateView, CreateView,DetailView, FormView,ListView,UpdateView,DeleteView
@@ -17,7 +17,7 @@ from .cron import my_cron_job
 ## REST API
 from rest_framework import viewsets, status
 from .serializers import ManagedNodesSerializer, IncidentsSerializer, IncidentsSerializerNew
-from .models import ManagedNodes, Incidents, Credentials, Rules
+from .models import ManagedNodes, Incidents, Credentials, Rules, Tokens
 
 from rest_framework.parsers import JSONParser 
 from rest_framework.views import APIView
@@ -49,10 +49,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 ## date
 import time
 import datetime
-from datetime import datetime 
+#from datetime import datetime 
 from datetime import date,timedelta
 #from datetime import datetime,date,timedelta
 from django.utils import timezone
+
+
 
 # Create your views here.
 def index(request):
@@ -204,6 +206,23 @@ class RuleDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('app:rules_view')
 
 @login_required
+def tokens_view(request):
+  ## order_by reverse - latest incident on top
+  all_tokens = models.Tokens.objects.all().order_by('token_name')
+  context = {'all_tokens':all_tokens}
+  return render(request,'app/tokens.html',context=context) 
+
+# Token create view
+class TokenCreateView(LoginRequiredMixin,CreateView):
+    model = Tokens
+    form_class = TokenForm
+    success_url = reverse_lazy('app:tokens_view')
+
+class TokenDeleteView(LoginRequiredMixin, DeleteView):
+    model = Tokens
+    success_url = reverse_lazy('app:tokens_view')
+
+@login_required
 def managed_nodes_view(request):
   ## order_by managed nodes
   all_managed_nodes = models.ManagedNodes.objects.all().order_by('instance_name')
@@ -243,7 +262,7 @@ class ManagedNodeDeleteView(LoginRequiredMixin, DeleteView):
 ## for fetching credential list
 ## https://simpleisbetterthancomplex.com/tutorial/2018/01/29/how-to-implement-dependent-or-chained-dropdown-list-with-django.html
 
-## Update, not using this
+## Update: not using this
 def load_credentials(request):
     #credential_id = request.GET.get('credential')
     all_credentials = models.Credentials.objects.all().order_by('pk')
@@ -253,7 +272,7 @@ def load_credentials(request):
 ## credential list view --> template/app/credentials.html
 def credentials_view(request):
     ## order_by managed nodes
-    all_credentials = models.Credentials.objects.all().order_by('cred_name')
+    all_credentials = models.Credentials.objects.all().order_by('id')
     #models.Incidents.objects.all().order_by('-incident_time')
     context = {'all_credentials':all_credentials}
     return render(request,'app/credentials.html',context=context)
@@ -362,13 +381,19 @@ def incident_report(request):
                 return JsonResponse(incident_serializer.data,   status=status.HTTP_204_NO_CONTENT) 
             return JsonResponse(incident_serializer.errors,     status=status.HTTP_400_BAD_REQUEST)
             #return incident_data
-        else:
+        elif 'FALCO_OGRULE' in incident_data['rule']:
             if incident_serializer.is_valid():
                 incident_serializer.save(incident_hostname=my_incident_hostname, incident_report_agent=this_incident_report_agent)
                 #print(incident_serializer.data)
                 return JsonResponse(incident_serializer.data, status=status.HTTP_201_CREATED) 
             return JsonResponse(incident_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             #return incident_data
+        else:
+            #pass
+            if incident_serializer.is_valid():
+                #incident_serializer.save    (incident_hostname=my_incident_hostname)
+                return JsonResponse(incident_serializer.data,   status=status.HTTP_204_NO_CONTENT) 
+            return JsonResponse(incident_serializer.errors,     status=status.HTTP_400_BAD_REQUEST)            
 
 @api_view(['GET', 'POST'])
 def incident_fix(request):
@@ -376,8 +401,6 @@ def incident_fix(request):
     #permission_classes = (IsAuthenticated) 
 
     if request.method == 'GET':
-        dateTimeObj = datetime.now()
-        timestampStr = str(dateTimeObj.strftime("%Y-%b-%d-%H:%M:%S"))
         #all_incidents = models.Incidents.objects.all().filter(incident_status='PENDING').order_by('incident_time').first()
         all_incidents = models.Incidents.objects.all().filter(incident_status='PENDING').order_by('incident_time')[0:1]
         #print(len(all_incidents))

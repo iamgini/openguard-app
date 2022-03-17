@@ -3,8 +3,15 @@ from django.forms import ModelForm
 #from django.forms import ModelForm
 #from crispy_forms.helper import FormHelper
 #from crispy_forms.layout import Submit
-from .models import ManagedNodes, Credentials, Rules
-from .models import Credentials
+from .models import ManagedNodes, Credentials, Rules, Tokens
+
+## for random token value
+import random
+import string
+
+## random generator
+def token_generator(size=20, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 class ManagedNodeForm(forms.ModelForm):
     class Meta:
@@ -56,7 +63,8 @@ class ManagedNodeForm(forms.ModelForm):
 class CredentialForm(forms.ModelForm):
     class Meta:
       model = Credentials
-#      #fields = "__all__"
+
+      #fields = "__all__"
       fields = ('cred_name',
                 'cred_type',
                 'cred_ssh_user_name',
@@ -68,6 +76,11 @@ class CredentialForm(forms.ModelForm):
             'cred_ssh_user_name': ('SSH Username (if Username-Password credential)'),
             'cred_ssh_password': ('SSH Password (if Username-Password credential)'),
             'cred_ssh_private_key': ('SSH private key (if SSH-Key credential)'),
+        }
+      widgets = {
+            #'cred_ssh_password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'please enter password'}),
+            'cred_ssh_password': forms.PasswordInput(render_value=True,attrs={'class': 'form-control',}),
+            #'cred_ssh_private_key': forms.PasswordInput(render_value=True,attrs={'class': 'form-control',}),
         }
       #help_texts = {
       #      'instance_name': ('Enter the Managed node information.'),
@@ -139,3 +152,33 @@ class RuleForm(forms.ModelForm):
         #self.fields['cred_type'].choices = CREDENTIAL_TYPES
 
     #cred_type = forms.ChoiceField()    
+
+class TokenForm(forms.ModelForm):
+    class Meta:
+      model = Tokens
+#      #fields = "__all__"
+      fields = ('token_name',
+                'token_desc',
+                'token_value'
+                )
+      labels = {
+            'token_name': ('Token name'),
+            'token_desc': ('Description for the Token'),
+            'token_value': ("Access Token"),
+          }
+      help_texts = {
+            #'token_name': ('Use "FALCO_OGRULE_" as prefix to identify.'),
+            #'token_value': ('This Ansible playbook will be used to remediate the violation of the rule.'),
+            'token_desc': ('Eg: Token for connecting from a falco agent'),
+            'token_value': ("Auto generated value; please save this as the token will not be displayed again !"),
+        }
+      widgets = {
+            #'cred_ssh_password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'please enter password'}),
+            #'token_value': forms.TextInput(attrs={'disabled': True}),
+            #'cred_ssh_private_key': forms.PasswordInput(render_value=True,attrs={'class': 'form-control',}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        new_token = token_generator()
+        self.fields['token_value'].initial = new_token

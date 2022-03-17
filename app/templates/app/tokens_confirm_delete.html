@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Access Token{% endblock %}
+
+
+        {%block content_header%}
+        {% if user.is_authenticated %}
+        <h1 class="h2">Access Token</h1>
+        {% endif %}
+        {% endblock %}
+ 
+{% block content %}
+{% if user.is_authenticated %}
+      <div class="row ">
+        <div class="col-12">
+          <div class="card shadow-sm">
+            <h5 class="card-header">Are you sure you want to delete this access token?</h5>
+            <div class="card-body">
+              <p>Delete access token: <strong>{{tokens}}</strong></p>
+              <p>If any of the devices or OpenGuard Runners using this Token, then the access will be denied !</p>
+              <form action="" method="post">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-danger" value="Confirm Delete">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endif %}
+{% endblock %}
+
