@@ -24,11 +24,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 ## REST API Token
-#from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 ## https://simpleisbetterthancomplex.com/tutorial/2018/11/22/how-to-implement-token-authentication-using-django-rest-framework.html
 
 ## Refer to https://www.bezkoder.com/django-rest-api
 from rest_framework.decorators import api_view
+from rest_framework.decorators import authentication_classes
+from rest_framework.decorators import permission_classes
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 ## for json to text converter and wrinting to log file
 import json
@@ -347,8 +351,11 @@ def nodes_list(request):
     #    return JsonResponse({'message': '{} Tutorials were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
   
 @api_view(['GET', 'POST', 'DELETE'])
+@authentication_classes([])
+@permission_classes([])
 def incident_report(request):
-
+    #authentication_classes = [] #disables authentication
+    #permission_classes = [] #disables permission
     #permission_classes = (IsAuthenticated) 
 
     #if request.method == 'GET':
@@ -365,8 +372,13 @@ def incident_report(request):
     if request.method == 'POST':
         incident_data = JSONParser().parse(request)
 
+        ## fetch the token and verify
+        access_token = request.query_params.get("token")
+        check_token = models.Tokens.objects.all().filter(token_value=access_token)
+
+
         incident_serializer = IncidentsSerializerNew(data=incident_data, context={
-           "incident_hostname": request.query_params.get("source_hostname")
+           "incident_hostname": request.query_params.get("source_hostname"),
         })
 
         my_incident_hostname = request.query_params.get("source_hostname")
@@ -395,10 +407,13 @@ def incident_report(request):
                 return JsonResponse(incident_serializer.data,   status=status.HTTP_204_NO_CONTENT) 
             return JsonResponse(incident_serializer.errors,     status=status.HTTP_400_BAD_REQUEST)            
 
+
 @api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def incident_fix(request):
 
-    #permission_classes = (IsAuthenticated) 
+    #permission_classes = (IsAuthenticated)
 
     if request.method == 'GET':
         #all_incidents = models.Incidents.objects.all().filter(incident_status='PENDING').order_by('incident_time').first()
@@ -505,3 +520,11 @@ def incident_fix(request):
         except Exception as job_fix_exception:
             print("Error: " + str(job_fix_exception))
             return Response("Something went wrong !")
+
+
+class HelloView(APIView):
+    permission_classes = (IsAuthenticated,)  
+
+    def get(self, request):
+        content = {'message': 'Hello, World!'}
+        return Response(content)

@@ -80,6 +80,7 @@ urlpatterns = [
 
   ## incident fix api from runner
   path('api/incident_fix/', views.incident_fix,name='incident_fix_api'),
+  path('api/hello/', views.HelloView.as_view(),name='api_hello'),
 
   #url(r'^api/tutorials$', views.tutorial_list),
 ]

@@ -175,6 +175,7 @@ class TokenForm(forms.ModelForm):
       widgets = {
             #'cred_ssh_password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'please enter password'}),
             #'token_value': forms.TextInput(attrs={'disabled': True}),
+            'token_value': forms.TextInput(attrs={'class': 'form-control',}),
             #'cred_ssh_private_key': forms.PasswordInput(render_value=True,attrs={'class': 'form-control',}),
         }
     
