@@ -434,7 +434,12 @@ def incident_fix(request):
                         node_name = getattr(managed_node,'instance_name')
                         node_connection_name = getattr(managed_node,'instance_name_connection')
                         node_connection_method = getattr(managed_node,'instance_credential')
-
+                        node_connection_data = node_connection_method.split("_")
+                        node_connection_details = models.Credentials.objects.all().filter(id=node_connection_data[0]).first()                        
+                        node_connection_username = getattr(node_connection_details,'cred_ssh_user_name')
+                        node_connection_password = getattr(node_connection_details,'cred_ssh_password')
+                        node_connection_type = getattr(node_connection_details,'cred_type')
+                        node_connection_key = getattr(node_connection_details,'cred_ssh_private_key')
                         try:
                             rule_list = models.Rules.objects.all().filter(rule_name = rule_detected).order_by       ('rule_name').first()
                             #print(len(rule_list))
@@ -448,7 +453,11 @@ def incident_fix(request):
                                                 "node_connection_name": node_connection_name,
                                                 "node_connection_method": node_connection_method,
                                                 "rule_fix_playbook": rule_fix_playbook,
-                                                "pending_incidents": "YES"
+                                                "pending_incidents": "YES",
+                                                "node_connection_username": node_connection_username,
+                                                'node_connection_password': node_connection_password,
+                                                'node_connection_key': node_connection_key,
+                                                'node_connection_type': node_connection_type,
                                               }
                                 return Response(job_data)
                                 #else:
