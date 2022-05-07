@@ -1,5 +1,9 @@
 <!-- templates/home.html -->
 {% extends 'base.html' %}
+
+<!-- for timezone-->
+{% load tz %}
+
 {% load static %}
 
 {% block title %}Home{% endblock %}
@@ -157,7 +161,11 @@
                         <tbody>
                           {% for incident in dashboard_data.latest_incidents %}
                           <tr>
-                            <td>{{ incident.incident_time }}</td>
+                            <td>
+                              {% timezone "Asia/Singapore" %}
+                              {{ incident.incident_time }}
+                              {% endtimezone %}
+                            </td>
                             <td>{{ incident.incident_hostname }}</td>
                             <td>{{ incident.incident_rule }}</td>
                             <td>{{ incident.incident_priority }}</td>                            
