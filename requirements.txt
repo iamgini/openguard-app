@@ -20,3 +20,6 @@ crispy_bootstrap5
 
 ## for pivot and graph
 #django-pivot
+
+#pyOpenSSL
+#django-extensions Werkzeu
