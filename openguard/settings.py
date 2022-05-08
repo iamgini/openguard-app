@@ -170,7 +170,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 # https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/s
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"
+#STATIC_ROOT = BASE_DIR / "staticfiles"
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
