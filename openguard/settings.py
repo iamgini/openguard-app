@@ -179,7 +179,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ## Add
-CSRF_TRUSTED_ORIGINS = ["http://openguard.lab.local", "http://www.yourdomain.com"]
+#CSRF_TRUSTED_ORIGINS = ["http://openguard.lab.local", "http://www.yourdomain.com"]
 
 ## Gineesh
 LOGIN_REDIRECT_URL = '/dashboard/'
