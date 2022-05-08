@@ -10,13 +10,15 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # install dependencies
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip \
+    && apt-get install -y nginx
 WORKDIR /code/
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 #USER openguard
 RUN mkdir -pv /var/log/gunicorn/ \
     && mkdir -pv /var/run/gunicorn/ 
+    #&& systemctl start nginx
 #    && chown -cR openguard /var/{log,run}/gunicorn/
 
 COPY . .
