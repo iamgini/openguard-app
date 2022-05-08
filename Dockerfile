@@ -9,14 +9,15 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ##   buffering stdout and stderr (equivalent to python -u option)
 ENV PYTHONUNBUFFERED=1
 
-USER openguard
+
 # install dependencies
 RUN pip install --upgrade pip
 WORKDIR /code/
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
-RUN mkdir -pv /var/{log,run}/gunicorn/ \
-    && chown -cR openguard /var/{log,run}/gunicorn/
+#USER openguard
+RUN mkdir -pv /var/{log,run}/gunicorn/ 
+#    && chown -cR openguard /var/{log,run}/gunicorn/
 
 COPY . .
 
